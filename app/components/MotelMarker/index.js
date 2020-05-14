@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { OverlayView } from '@react-google-maps/api';
 import './style.scss';
 function MotelMarker(props) {
@@ -30,9 +30,10 @@ function MotelMarker(props) {
     >
       <div
         className="motel-marker-wrapper"
-        style={{ color: backgroundColor }}
+        style={{ backgroundColor: backgroundColor, color: backgroundColor }}
         onClick={() => {
           setMotel(motel);
+          console.log(listReview);
           if (listReview) {
             if (!listReview.includes(motel._id)) {
               /* eslint no-underscore-dangle: 0 */
@@ -58,4 +59,4 @@ function MotelMarker(props) {
 
 MotelMarker.propTypes = {};
 
-export default memo(MotelMarker);
+export default MotelMarker;
