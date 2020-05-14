@@ -1,0 +1,36 @@
+export const urlLink = {
+  // AUTHENTICATE
+  api: {
+    serverUrl: 'http://150.95.114.44:5502/api',
+    auth: {
+      sign_up: '/v1/auth/signUp',
+      sign_in: '/v1/auth/signIn',
+      log_out: '/v1/auth/logout',
+      profile: '/v1/user/profile',
+      confirmOTP: '/v1/auth/verifyUser/confirmOTP',
+      resendOTP: '/v1/auth/verifyUser/resendOTP',
+    },
+    motelList: '/v1/homeKey/motelRoom/list',
+    motelDetail: '/v1/homeKey/motelRoom/',
+    roomDetail: '/v1/homeKey/room/',
+    createMotel: '/v1/homeKey/motelRoom',
+    getRoomList: '/v1/user/motelRoom/list',
+    createFloor: '/v1/homeKey/floor',
+    job: '/v1/homeKey/job',
+    adminUser: '/v1/admin/user',
+    adminJobList: '/v1/admin/homeKey/job/list',
+    adminJobDetail: '/v1/admin/homeKey/job/',
+    adminJobListView: '/admin/job/list',
+    adminGetOrderList: '/v1/admin/homeKey/order/list',
+    adminGetOrderDetail: '/v1/admin/homeKey/order/',
+  },
+  auth: {
+    sign_in: '/auth/login',
+    sign_up: '/auth/sign-up',
+  },
+  home: '/',
+  orderList: '/admin/order/list',
+  profile: '/profile',
+  change_password: '/profile/change-password',
+  infor_profile: '/profile/infor-profile',
+};
