@@ -3,15 +3,14 @@ import axios from 'axios';
 import { push } from 'react-router-redux';
 import { POST_LOGIN } from './constants';
 import { urlLink } from '../helper/route';
-import { postLoginSuccess, postLoginFail } from './actions';
-import { loadRepos, reposLoaded, saveCurrentUser } from '../App/actions';
+import { postLoginFail } from './actions';
+import { saveCurrentUser, loadRepos, reposLoaded } from '../App/actions';
 
 export function* apiPostLogin(payload) {
-  const { payload: data = {} } = payload;
   const requestUrl = urlLink.api.serverUrl + urlLink.api.auth.sign_in;
   yield put(loadRepos());
   try {
-    const response = yield axios.post(requestUrl, data);
+    const response = yield axios.post(requestUrl, payload.payload);
     const {
       data: userLogin,
       data: { token },
@@ -19,16 +18,16 @@ export function* apiPostLogin(payload) {
     // --------------------axios setting headers to request API-----------------------------------
     yield (axios.defaults.headers.common.Authorization = `Bearer ${token}`);
     // -------------------------------------------------------------------------------------------
-    yield localStorage.set('token', userLogin.token);
-    yield localStorage.set('role', userLogin.role);
-    yield localStorage.set('user', userLogin);
-    yield put(postSignInSuccess(userLogin));
+    yield localStorage.setItem('token', userLogin.token);
+    yield localStorage.setItem('role', JSON.stringify(userLogin.role));
+    yield localStorage.setItem('user', JSON.stringify(userLogin));
+    yield put(postLoginFail(userLogin));
     yield put(saveCurrentUser(userLogin));
     yield put(push(urlLink.home));
   } catch (error) {
     if (error.response) {
       const { data = {} } = error.response;
-      yield put(postLoginSuccess(data));
+      yield put(postLoginFail(data));
     } else {
       const offlineData = {
         data: [],

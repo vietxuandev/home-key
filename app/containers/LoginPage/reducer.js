@@ -8,7 +8,7 @@ import { POST_LOGIN_FAIL, POST_LOGIN_SUCCESS } from './constants';
 
 export const initialState = {
   currentUser: {},
-  errors: [],
+  loginErrors: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -19,7 +19,7 @@ const loginPageReducer = (state = initialState, action) =>
         draft.currentUser = action.response;
         break;
       case POST_LOGIN_FAIL:
-        draft.error = action.error.errors;
+        draft.loginErrors = action.error.errors;
         break;
     }
   });
