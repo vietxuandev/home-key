@@ -15,8 +15,9 @@ import { Switch, Route } from 'react-router-dom';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import axios from 'axios';
-import HomePage from 'containers/HomePage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
+import HomePage from 'containers/HomePage/Loadable';
+import MotelPage from 'containers/MotelPage/Loadable';
 import makeSelectApp from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -42,7 +43,7 @@ export function App(props) {
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/login" component={LoginPage} />
-        <Route path="" component={LoginPage} />
+        <Route path="/motel/:id" component={MotelPage} />
       </Switch>
       {loading && <LoadingIndicator />}
     </div>

@@ -24,9 +24,38 @@ import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 
 // Load the favicon and the .htaccess file
+import '!file-loader?name=[name].[ext]!./images/electric.png';
+import '!file-loader?name=[name].[ext]!./images/water.png';
 import '!file-loader?name=[name].[ext]!./images/favicon.png';
-import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line import/extensions
+import '!file-loader?name=[name].[ext]!./images/Kevin.png';
+import '!file-loader?name=[name].[ext]!./images/Kevon.png';
+import '!file-loader?name=[name].[ext]!./images/icon-maps.png';
+import '!file-loader?name=[name].[ext]!./images/defaul-room.jpg';
+import '!file-loader?name=[name].[ext]!./images/checked.png';
+import '!file-loader?name=[name].[ext]!./images/background.jpg';
+import '!file-loader?name=[name].[ext]!./images/electric.png';
 
+import '!file-loader?name=[name].[ext]!./images/air_conditioner.png';
+import '!file-loader?name=[name].[ext]!./images/broom.png';
+import '!file-loader?name=[name].[ext]!./images/delivery.png';
+import '!file-loader?name=[name].[ext]!./images/dropceiling.png';
+import '!file-loader?name=[name].[ext]!./images/gate.png';
+import '!file-loader?name=[name].[ext]!./images/laundry.png';
+import '!file-loader?name=[name].[ext]!./images/shower.png';
+import '!file-loader?name=[name].[ext]!./images/stairs.png';
+import '!file-loader?name=[name].[ext]!./images/television.png';
+import '!file-loader?name=[name].[ext]!./images/time.png';
+import '!file-loader?name=[name].[ext]!./images/toiletbowl.png';
+import '!file-loader?name=[name].[ext]!./images/wardrobe.png';
+import '!file-loader?name=[name].[ext]!./images/washstand.png';
+import '!file-loader?name=[name].[ext]!./images/wifi.png';
+import '!file-loader?name=[name].[ext]!./images/ic_profile_blue.png';
+import '!file-loader?name=[name].[ext]!./images/ic_notification.png';
+import '!file-loader?name=[name].[ext]!./images/icon_add.png';
+import '!file-loader?name=[name].[ext]!./images/edit.png';
+import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line import/extensions
+import 'font-awesome/css/font-awesome.min.css';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import configureStore from './configureStore';
 
 // Import i18n messages
