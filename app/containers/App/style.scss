@@ -1,0 +1,9 @@
+@import "~antd/dist/antd.css";
+.app-wrapper {
+    height: 100vh;
+    padding-top: 80px;
+    position: relative;
+    @media (max-width: 576px) {
+        padding-top: 57px;
+    }
+}

@@ -2,9 +2,10 @@ import { put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import { push } from 'react-router-redux';
 import { POST_LOGIN } from './constants';
-import { urlLink } from '../helper/route';
+import { urlLink } from '../../helper/route';
 import { postLoginFail } from './actions';
 import { saveCurrentUser, loadRepos, reposLoaded } from '../App/actions';
+import localStore from 'local-storage';
 
 export function* apiPostLogin(payload) {
   const requestUrl = urlLink.api.serverUrl + urlLink.api.auth.sign_in;
@@ -18,9 +19,9 @@ export function* apiPostLogin(payload) {
     // --------------------axios setting headers to request API-----------------------------------
     yield (axios.defaults.headers.common.Authorization = `Bearer ${token}`);
     // -------------------------------------------------------------------------------------------
-    yield localStorage.setItem('token', userLogin.token);
-    yield localStorage.setItem('role', JSON.stringify(userLogin.role));
-    yield localStorage.setItem('user', JSON.stringify(userLogin));
+    yield localStore.set('token', userLogin.token);
+    yield localStore.set('role', userLogin.role);
+    yield localStore.set('user', userLogin);
     yield put(postLoginFail(userLogin));
     yield put(saveCurrentUser(userLogin));
     yield put(push(urlLink.home));

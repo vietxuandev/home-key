@@ -1,8 +1,13 @@
-import React, { useState, Fragment } from 'react';
+/**
+ *
+ * Header
+ *
+ */
+
+import React, { memo, useState } from 'react';
 import ClassNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import _ from 'lodash';
-import PropTypes from 'prop-types';
 import './style.scss';
 import {
   UncontrolledDropdown,
@@ -10,13 +15,13 @@ import {
   DropdownMenu,
   DropdownItem,
 } from 'reactstrap';
-import MenuButton from '../MenuButton';
+import Menu from '../Menu/Loadable';
 
-const Header = props => {
-  const { currentUser = {} } = props;
+function Header(props) {
+  const { currentUser = {}, changeStoreData = () => {} } = props;
   const [toggle, setToggle] = useState(false);
   return (
-    <div className="navbar-wrapper">
+    <div className="header-wrapper">
       <div className="header-content clearfix">
         <div className="text-logo">
           <NavLink exact to="/">
@@ -66,19 +71,6 @@ const Header = props => {
                 </DropdownToggle>
                 <DropdownMenu right>
                   <DropdownItem href="/profile">Thông tin cá nhân</DropdownItem>
-                  {currentUser.role.includes('master') && (
-                    <Fragment>
-                      <DropdownItem href="/admin/users">
-                        Quản lý user
-                      </DropdownItem>
-                      <DropdownItem href="/admin/job/list">
-                        Quản lý job
-                      </DropdownItem>
-                      <DropdownItem href="/admin/order/list">
-                        Quản lý order
-                      </DropdownItem>
-                    </Fragment>
-                  )}
                   <DropdownItem>Đổi mật khẩu</DropdownItem>
                   <DropdownItem divider />
                   <DropdownItem
@@ -113,16 +105,13 @@ const Header = props => {
           }}
           role="presentation"
         >
-          <MenuButton toggle={toggle} />
+          <Menu toggle={toggle} />
         </div>
       </div>
     </div>
   );
-};
+}
 
-Header.propTypes = {
-  currentUser: PropTypes.object,
-  changeStoreData: PropTypes.func,
-};
+Header.propTypes = {};
 
-export default Header;
+export default memo(Header);

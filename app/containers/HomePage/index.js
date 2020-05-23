@@ -24,8 +24,8 @@ import { getMotels } from './actions';
 import _ from 'lodash';
 import './style.scss';
 const mapContainerStyle = {
-  height: '100vh',
-  width: '100vw',
+  height: '100%',
+  width: '100%',
 };
 
 const center = { lat: 10.856866, lng: 106.763324 };

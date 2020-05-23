@@ -1,6 +1,6 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import { GET_MOTELS } from './constants';
-import { urlLink } from '../helper/route';
+import { urlLink } from '../../helper/route';
 import { getMotelsSuccess, getMotelsFail } from './actions';
 import axios from 'axios';
 import { loadRepos, reposLoaded } from '../App/actions';

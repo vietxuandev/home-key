@@ -2,7 +2,7 @@ import { put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import { push } from 'react-router-redux';
 import { LOGOUT } from './constants';
-import { urlLink } from '../helper/route';
+import { urlLink } from '../../helper/route';
 import {
   getLogoutSuccess,
   getLogoutFail,

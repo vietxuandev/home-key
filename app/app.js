@@ -55,7 +55,7 @@ import '!file-loader?name=[name].[ext]!./images/icon_add.png';
 import '!file-loader?name=[name].[ext]!./images/edit.png';
 import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line import/extensions
 import 'font-awesome/css/font-awesome.min.css';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.css';
 import configureStore from './configureStore';
 
 // Import i18n messages

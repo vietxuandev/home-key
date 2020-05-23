@@ -5,15 +5,6 @@
  */
 
 import React, { memo, useEffect } from 'react';
-import Input from '@material-ui/core/Input';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Alert from '@material-ui/lab/Alert';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Typography from '@material-ui/core/Typography';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
@@ -31,11 +22,23 @@ import saga from './saga';
 
 import './style.scss';
 import { postLogin } from './actions';
+import {
+  InputAdornment,
+  IconButton,
+  Typography,
+  Button,
+  TextField,
+} from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
 
 export function LoginPage(props) {
   useInjectReducer({ key: 'loginPage', reducer });
   useInjectSaga({ key: 'loginPage', saga });
   const { loginErrors = [] } = props.loginPage;
+  const handleMouseDownPassword = event => {
+    event.preventDefault();
+  };
   useEffect(() => {
     const ele = document.getElementById('ipl-progress-indicator');
     if (ele) {
@@ -56,70 +59,92 @@ export function LoginPage(props) {
         <title>LoginPage</title>
         <meta name="description" content="Description of LoginPage" />
       </Helmet>
-      <Grid container justify="center" alignContent="center">
-        <Grid item xs={6} md={4}>
-          <Paper
-            elevation={4}
-            style={{ padding: '20px 15px', marginTop: '30px' }}
-          >
-            <Typography variant="h6" gutterBottom>
-              Login
-            </Typography>
-            {loginErrors.length > 0 && (
-              <Alert severity="error">
-                {loginErrors.map(error => error.errorMessage)}
-              </Alert>
-            )}
-            <Formik
-              initialValues={{ phoneNumber: '', password: '' }}
-              onSubmit={env => props.postLogin(env)}
-              validationSchema={Yup.object().shape({
-                phoneNumber: Yup.string().required('Required'),
-                password: Yup.string().required('Required'),
-              })}
-            >
-              {({ values, touched, errors, handleSubmit }) => (
-                <Form onSubmit={handleSubmit}>
-                  <FormControl fullWidth margin="normal">
-                    <InputLabel>Phone number</InputLabel>
-                    <Field name="phoneNumber">
-                      {({ field }) => <Input fullWidth {...field} />}
-                    </Field>
-                    {touched.phoneNumber && errors.phoneNumber && (
-                      <FormHelperText>{errors.phoneNumber}</FormHelperText>
-                    )}
-                  </FormControl>
-                  <FormControl fullWidth margin="normal">
-                    <InputLabel>Password</InputLabel>
-                    <Field name="password">
-                      {({ field }) => (
-                        <Input fullWidth type="password" {...field} />
-                      )}
-                    </Field>
-                    {touched.password && errors.password && (
-                      <FormHelperText>{errors.password}</FormHelperText>
-                    )}
-                  </FormControl>
-                  <FormControl fullWidth margin="normal">
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      type="submit"
-                      disabled={
-                        !values.phoneNumber ||
-                        !values.password ||
-                        !_.isEmpty(errors)
-                      }
-                    >
-                      Login
-                    </Button>
-                  </FormControl>
-                </Form>
+      <Typography variant="h6" gutterBottom>
+        Login
+      </Typography>
+      {loginErrors.length > 0 && (
+        <Alert severity="error">
+          {loginErrors.map(error => error.errorMessage)}
+        </Alert>
+      )}
+      <Formik
+        initialValues={{
+          phoneNumber: '',
+          password: '',
+          showPassword: false,
+        }}
+        enableReinitialize
+        onSubmit={env => props.postLogin(env)}
+        validationSchema={Yup.object().shape({
+          phoneNumber: Yup.string().required('Required'),
+          password: Yup.string().required('Required'),
+        })}
+      >
+        {({ values, errors, touched, handleSubmit, setFieldValue }) => (
+          <Form onSubmit={handleSubmit}>
+            <Field name="phoneNumber">
+              {({ field }) => (
+                <TextField
+                  style={{ margin: '10px 0' }}
+                  label="Phone number"
+                  variant="outlined"
+                  required
+                  helperText={touched.phoneNumber && errors.phoneNumber}
+                  fullWidth
+                  size="small"
+                  {...field}
+                />
               )}
-            </Formik>
-          </Paper>
-        </Grid>
-      </Grid>
+            </Field>
+            <Field name="password">
+              {({ field }) => (
+                <TextField
+                  style={{ margin: '10px 0' }}
+                  label="Password"
+                  variant="outlined"
+                  required
+                  type={values.showPassword ? 'text' : 'password'}
+                  helperText={touched.password && errors.password}
+                  fullWidth
+                  size="small"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() =>
+                            setFieldValue('showPassword', !values.showPassword)
+                          }
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {values.showPassword ? (
+                            <Visibility />
+                          ) : (
+                            <VisibilityOff />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  {...field}
+                />
+              )}
+            </Field>
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              type="submit"
+              disabled={
+                !values.phoneNumber || !values.password || !_.isEmpty(errors)
+              }
+            >
+              Login
+            </Button>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 }

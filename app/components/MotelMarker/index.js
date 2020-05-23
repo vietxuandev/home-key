@@ -6,9 +6,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { OverlayView } from '@react-google-maps/api';
+import localStore from 'local-storage';
 import './style.scss';
 function MotelMarker(props) {
-  const listReview = JSON.parse(localStorage.getItem('listReview'));
+  const listReview = localStore.get('listReview');
   const [backgroundColor, setBackgroundColor] = useState('green');
   const { motel = {}, setMotel = () => {} } = props;
   useEffect(() => {
@@ -33,18 +34,14 @@ function MotelMarker(props) {
         style={{ backgroundColor: backgroundColor, color: backgroundColor }}
         onClick={() => {
           setMotel(motel);
-          console.log(listReview);
           if (listReview) {
             if (!listReview.includes(motel._id)) {
               /* eslint no-underscore-dangle: 0 */
-              localStorage.setItem(
-                'listReview',
-                JSON.stringify([...listReview, motel._id]),
-              );
+              localStore.set('listReview', [...listReview, motel._id]);
             }
           } else {
             /* eslint no-underscore-dangle: 0 */
-            localStorage.setItem('listReview', JSON.stringify([motel._id]));
+            localStore.set('listReview', [motel._id]);
           }
           setBackgroundColor('grey');
         }}
