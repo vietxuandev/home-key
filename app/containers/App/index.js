@@ -39,15 +39,15 @@ export function App(props) {
   const handleClose = () => {
     props.changeStoreData('showLogout', false);
   };
+  const handleLogout = () => {
+    props.changeStoreData('showLogout', true);
+  };
   useEffect(() => {
     props.saveCurrentUser(localStore.get('user')) || {};
   }, []);
   return (
     <div className="app-wrapper">
-      <MenuAppBar
-        currentUser={currentUser}
-        changeStoreData={props.changeStoreData}
-      />
+      <MenuAppBar currentUser={currentUser} handleLogout={handleLogout} />
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/auth" component={AuthPage} />
