@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useState, Fragment } from 'react';
+import React, { memo, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -13,24 +13,26 @@ import { compose } from 'redux';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import { InputAdornment, IconButton } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
-import { Visibility, VisibilityOff } from '@material-ui/icons';
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Alert from '@material-ui/lab/Alert';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { Link as LinkDom } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { Link as LinkDom } from 'react-router-dom';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
+import Otp from 'containers/Otp/Loadable';
 import makeSelectSignUpPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import { postSignUp, changeStoreData } from './actions';
-import Otp from 'containers/Otp/Loadable';
 
 const REGEX_PASSWORD = /\S.*\S/;
 const validateForm = Yup.object().shape({
@@ -62,12 +64,7 @@ export function SignUpPage(props) {
   useInjectReducer({ key: 'signUpPage', reducer });
   useInjectSaga({ key: 'signUpPage', saga });
   const classes = useStyles();
-  const [role, setRole] = useState('customer');
-  const {
-    open = false,
-    signUpErrors = [],
-    currentUser = {},
-  } = props.signUpPage;
+  const { open = false, signUpErrors = [] } = props.signUpPage;
   const handleMouseDownPassword = event => {
     event.preventDefault();
   };
@@ -96,7 +93,6 @@ export function SignUpPage(props) {
           phoneNumber: '',
           password: '',
           confirmPassword: '',
-          role,
           showPassword: false,
           showConfirmPassword: false,
         }}
@@ -119,9 +115,7 @@ export function SignUpPage(props) {
                       helperText={touched.firstName && errors.firstName}
                       fullWidth
                       size="small"
-                      error={
-                        touched.firstName && errors.firstName ? true : false
-                      }
+                      error={!!(touched.firstName && errors.firstName)}
                       {...field}
                     />
                   )}
@@ -137,7 +131,7 @@ export function SignUpPage(props) {
                       helperText={touched.lastName && errors.lastName}
                       fullWidth
                       size="small"
-                      error={touched.lastName && errors.lastName ? true : false}
+                      error={!!(touched.lastName && errors.lastName)}
                       {...field}
                     />
                   )}
@@ -153,9 +147,7 @@ export function SignUpPage(props) {
                       helperText={touched.phoneNumber && errors.phoneNumber}
                       fullWidth
                       size="small"
-                      error={
-                        touched.phoneNumber && errors.phoneNumber ? true : false
-                      }
+                      error={!!(touched.phoneNumber && errors.phoneNumber)}
                       {...field}
                     />
                   )}
@@ -195,7 +187,7 @@ export function SignUpPage(props) {
                           </InputAdornment>
                         ),
                       }}
-                      error={touched.password && errors.password ? true : false}
+                      error={!!(touched.password && errors.password)}
                       {...field}
                     />
                   )}
@@ -238,9 +230,7 @@ export function SignUpPage(props) {
                         ),
                       }}
                       error={
-                        touched.confirmPassword && errors.confirmPassword
-                          ? true
-                          : false
+                        !!(touched.confirmPassword && errors.confirmPassword)
                       }
                       {...field}
                     />
@@ -276,7 +266,9 @@ export function SignUpPage(props) {
 }
 
 SignUpPage.propTypes = {
-  dispatch: PropTypes.func,
+  signUpPage: PropTypes.object,
+  changeStoreData: PropTypes.func,
+  postSignUp: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({

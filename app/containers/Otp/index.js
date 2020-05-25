@@ -4,25 +4,22 @@
  *
  */
 
-import React, { memo, useState } from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Button,
-  Grid,
-} from '@material-ui/core';
+import React, { memo } from 'react';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Alert from '@material-ui/lab/Alert';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import _ from 'lodash';
 import localStore from 'local-storage';
-import { Alert } from '@material-ui/lab';
 import ReactCodeInput from 'react-code-input';
 
 import { useInjectSaga } from 'utils/injectSaga';
@@ -92,7 +89,7 @@ export function Otp(props) {
                 <ReactCodeInput
                   name="code"
                   value={values.code}
-                  autoFocus={true}
+                  autoFocus
                   fields={6}
                   touched={touched.code}
                   onChange={value => {
@@ -108,7 +105,7 @@ export function Otp(props) {
               <Button
                 type="submit"
                 color="primary"
-                disabled={!values.code || errors.code ? true : false}
+                disabled={!!(!values.code || errors.code)}
               >
                 Send
               </Button>
@@ -121,7 +118,11 @@ export function Otp(props) {
 }
 
 Otp.propTypes = {
-  dispatch: PropTypes.func,
+  otp: PropTypes.object,
+  open: PropTypes.bool,
+  setOpen: PropTypes.func,
+  postOTP: PropTypes.func,
+  getResendOTP: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({

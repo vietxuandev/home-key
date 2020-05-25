@@ -13,16 +13,18 @@ import { compose } from 'redux';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import { InputAdornment, IconButton } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
-import { Visibility, VisibilityOff } from '@material-ui/icons';
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Alert from '@material-ui/lab/Alert';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { Link as LinkDom } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { Link as LinkDom } from 'react-router-dom';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -93,9 +95,7 @@ export function LoginPage(props) {
                       helperText={touched.phoneNumber && errors.phoneNumber}
                       fullWidth
                       size="small"
-                      error={
-                        touched.phoneNumber && errors.phoneNumber ? true : false
-                      }
+                      error={!!(touched.phoneNumber && errors.phoneNumber)}
                       {...field}
                     />
                   )}
@@ -135,7 +135,7 @@ export function LoginPage(props) {
                           </InputAdornment>
                         ),
                       }}
-                      error={touched.password && errors.password ? true : false}
+                      error={!!(touched.password && errors.password)}
                       {...field}
                     />
                   )}

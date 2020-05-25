@@ -5,6 +5,7 @@
  */
 
 import React, { memo, useEffect } from 'react';
+import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -20,18 +21,16 @@ import reducer from './reducer';
 import saga from './saga';
 import { getRoom } from './actions';
 import './style.scss';
-import { Button } from '@material-ui/core';
-
 export function RoomPage(props) {
   useInjectReducer({ key: 'roomPage', reducer });
   useInjectSaga({ key: 'roomPage', saga });
   const { id } = useParams();
   const history = useHistory();
-  const { room = {}, roomErrors = [] } = props.roomPage;
-  const { getRoom = () => {} } = props;
+  const { room = {} } = props.roomPage;
+  const { getRoomDetail = () => {} } = props;
 
   useEffect(() => {
-    getRoom(id);
+    getRoomDetail(id);
   }, []);
 
   const {
@@ -303,7 +302,8 @@ export function RoomPage(props) {
 }
 
 RoomPage.propTypes = {
-  dispatch: PropTypes.func,
+  roomPage: PropTypes.object,
+  getRoomDetail: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -312,7 +312,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getRoom: id => {
+    getRoomDetail: id => {
       dispatch(getRoom(id));
     },
   };

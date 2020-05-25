@@ -5,18 +5,17 @@
  */
 
 import React, { memo, useLayoutEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Switch, Route } from 'react-router-dom';
-import { urlLink } from '../../helper/route';
 import LoginPage from 'containers/LoginPage/Loadable';
 import SignUpPage from 'containers/SignUpPage/Loadable';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Paper } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import { urlLink } from '../../helper/route';
 import './style.scss';
 
 const useStyles = makeStyles(theme => ({
@@ -67,9 +66,7 @@ export function AuthPage() {
   );
 }
 
-AuthPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
+AuthPage.propTypes = {};
 
 function mapDispatchToProps(dispatch) {
   return {
