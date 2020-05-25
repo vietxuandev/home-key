@@ -27,10 +27,9 @@ export function RoomPage(props) {
   const { id } = useParams();
   const history = useHistory();
   const { room = {} } = props.roomPage;
-  const { getRoomDetail = () => {} } = props;
 
   useEffect(() => {
-    getRoomDetail(id);
+    props.getRoom(id);
   }, []);
 
   const {
@@ -303,7 +302,7 @@ export function RoomPage(props) {
 
 RoomPage.propTypes = {
   roomPage: PropTypes.object,
-  getRoomDetail: PropTypes.func,
+  getRoom: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -312,7 +311,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getRoomDetail: id => {
+    getRoom: id => {
       dispatch(getRoom(id));
     },
   };
