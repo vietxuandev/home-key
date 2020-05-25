@@ -36,10 +36,10 @@ export function App(props) {
   useInjectReducer({ key: 'app', reducer });
   useInjectSaga({ key: 'app', saga });
   const { loading, currentUser, showLogout } = props.app;
-  const handleClose = () => {
+  const handleCloseLogout = () => {
     props.changeStoreData('showLogout', false);
   };
-  const handleLogout = () => {
+  const handleShowLogout = () => {
     props.changeStoreData('showLogout', true);
   };
   useEffect(() => {
@@ -47,7 +47,10 @@ export function App(props) {
   }, []);
   return (
     <div className="app-wrapper">
-      <MenuAppBar currentUser={currentUser} handleLogout={handleLogout} />
+      <MenuAppBar
+        currentUser={currentUser}
+        handleShowLogout={handleShowLogout}
+      />
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/auth" component={AuthPage} />
@@ -56,7 +59,7 @@ export function App(props) {
         <Route path="/motel-room/:id" component={MotelRoom} />
       </Switch>
       {loading && <LoadingIndicator />}
-      <Logout open={showLogout} handleClose={handleClose} />
+      <Logout open={showLogout} handleCloseLogout={handleCloseLogout} />
     </div>
   );
 }

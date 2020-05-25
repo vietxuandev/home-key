@@ -16,23 +16,11 @@
         &::after {
           color: brown;
         }
-        &:hover {
-          background-color: rgb(138, 38, 38);
-          &::after {
-            color: rgb(138, 38, 38);
-          }
-        }
       }
       &.rented {
         background-color: red;
         &::after {
           color: red;
-        }
-        &:hover {
-          background-color: rgb(194, 0, 0);
-          &::after {
-            color: rgb(194, 0, 0);
-          }
         }
       }
       &.available {
@@ -40,28 +28,16 @@
         &::after {
           color: rgb(69, 168, 69);
         }
-        &:hover {
-          background-color: rgb(48, 122, 48);
-          &::after {
-            color: rgb(48, 122, 48);
-          }
-        }
       }
       &.deposited {
         background-color: orange;
         &::after {
           color: orange;
         }
-        &:hover {
-          background-color: rgb(182, 118, 0);
-          &::after {
-            color: rgb(182, 118, 0);
-          }
-        }
       }
       &.active {
         &::after {
-          content: "\f0d7";
+          content: '\f0d7';
           font-size: 25px;
           font-family: FontAwesome;
           position: absolute;

@@ -95,7 +95,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function MenuAppBar(props) {
-  const { currentUser = {}, handleLogout = () => {} } = props;
+  const { currentUser = {}, handleShowLogout = () => {} } = props;
   const [openMenu, setOpenMenu] = useState(false);
 
   const classes = useStyles();
@@ -138,7 +138,7 @@ function MenuAppBar(props) {
       <MenuItem onClick={handleMenuClose}>Thông tin cá nhân</MenuItem>
       <MenuItem
         onClick={() => {
-          handleLogout();
+          handleShowLogout();
           setAnchorEl(null);
           handleMobileMenuClose();
         }}
