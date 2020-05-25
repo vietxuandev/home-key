@@ -10,8 +10,8 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Switch, Route } from 'react-router-dom';
 import { urlLink } from '../../helper/route';
-import LoginPage from 'containers/LoginPage';
-import SignUpPage from 'containers/SignUpPage';
+import LoginPage from 'containers/LoginPage/Loadable';
+import SignUpPage from 'containers/SignUpPage/Loadable';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';

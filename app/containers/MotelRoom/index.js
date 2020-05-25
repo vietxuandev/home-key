@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import { useParams } from 'react-router-dom';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -24,7 +25,7 @@ import FloorDetail from '../../components/FloorDetail/Loadable';
 export function MotelRoom(props) {
   useInjectReducer({ key: 'motelRoom', reducer });
   useInjectSaga({ key: 'motelRoom', saga });
-  const { id } = props.match.params;
+  const { id } = useParams();
   const [status, setStatus] = useState('all');
   useEffect(() => {
     props.getMotel(id);

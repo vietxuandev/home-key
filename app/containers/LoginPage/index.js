@@ -93,6 +93,9 @@ export function LoginPage(props) {
                       helperText={touched.phoneNumber && errors.phoneNumber}
                       fullWidth
                       size="small"
+                      error={
+                        touched.phoneNumber && errors.phoneNumber ? true : false
+                      }
                       {...field}
                     />
                   )}
@@ -132,6 +135,7 @@ export function LoginPage(props) {
                           </InputAdornment>
                         ),
                       }}
+                      error={touched.password && errors.password ? true : false}
                       {...field}
                     />
                   )}

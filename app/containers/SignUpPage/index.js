@@ -119,6 +119,9 @@ export function SignUpPage(props) {
                       helperText={touched.firstName && errors.firstName}
                       fullWidth
                       size="small"
+                      error={
+                        touched.firstName && errors.firstName ? true : false
+                      }
                       {...field}
                     />
                   )}
@@ -134,6 +137,7 @@ export function SignUpPage(props) {
                       helperText={touched.lastName && errors.lastName}
                       fullWidth
                       size="small"
+                      error={touched.lastName && errors.lastName ? true : false}
                       {...field}
                     />
                   )}
@@ -149,6 +153,9 @@ export function SignUpPage(props) {
                       helperText={touched.phoneNumber && errors.phoneNumber}
                       fullWidth
                       size="small"
+                      error={
+                        touched.phoneNumber && errors.phoneNumber ? true : false
+                      }
                       {...field}
                     />
                   )}
@@ -188,6 +195,7 @@ export function SignUpPage(props) {
                           </InputAdornment>
                         ),
                       }}
+                      error={touched.password && errors.password ? true : false}
                       {...field}
                     />
                   )}
@@ -229,6 +237,11 @@ export function SignUpPage(props) {
                           </InputAdornment>
                         ),
                       }}
+                      error={
+                        touched.confirmPassword && errors.confirmPassword
+                          ? true
+                          : false
+                      }
                       {...field}
                     />
                   )}

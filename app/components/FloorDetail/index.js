@@ -47,6 +47,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const visibleStyles = { opacity: 1 };
+const hiddenStyles = { opacity: 0 };
+
 function FloorDetail(props) {
   const { floors = [] } = props;
 
