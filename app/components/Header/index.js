@@ -15,7 +15,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from 'reactstrap';
-import Menu from '../Menu/Loadable';
+// import Menu from '../Menu/Loadable';
 
 function Header(props) {
   const { currentUser = {}, changeStoreData = () => {} } = props;
@@ -105,7 +105,7 @@ function Header(props) {
           }}
           role="presentation"
         >
-          <Menu toggle={toggle} />
+          {/* <Menu toggle={toggle} /> */}
         </div>
       </div>
     </div>

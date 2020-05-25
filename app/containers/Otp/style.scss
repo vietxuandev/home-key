@@ -1,0 +1,13 @@
+.otp-wrapper {
+    @media (max-width: 576px) {
+        .react-code-input {
+            input {
+                font-size: 22px !important;
+            }
+        }
+    }
+    display: flex;
+    flex-wrap: wrap; /* Optional. only if you want the items to wrap */
+    justify-content: center; /* For horizontal alignment */
+    align-items: center; /* For vertical alignment */
+}

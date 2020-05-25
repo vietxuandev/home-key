@@ -1,5 +1,6 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { push } from 'react-router-redux';
 import { POST_LOGIN } from './constants';
 import { urlLink } from '../../helper/route';

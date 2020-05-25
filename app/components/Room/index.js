@@ -5,7 +5,7 @@
  */
 
 import React, { memo } from 'react';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import ClassNames from 'classnames';
 import './style.scss';
 
@@ -16,11 +16,11 @@ function Room(props) {
     <div
       className={ClassNames('room-box', item.status)}
       onClick={() => {
-        history.push(`/room-detail/${item._id}`);
+        history.push(`/room/${item._id}`);
       }}
     >
       <div className="name">
-        {item.status === 'unknown' ? 'Chưa cập nhật' : item.name}
+        {item.status === 'unknown' ? 'Chưa cập nhật' : `Phòng ${item.name}`}
       </div>
       <div className="price">
         {item.status === 'unknown' ? 'unknown' : `${item.acreage} m2`}

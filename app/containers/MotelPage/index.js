@@ -4,106 +4,90 @@
  *
  */
 
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import { useParams, useHistory } from 'react-router-dom';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import { useParams } from 'react-router';
 import makeSelectMotelPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import ClassNames from 'classnames';
+
+import { UncontrolledCarousel, Container } from 'reactstrap';
+import { getMotel } from '../MotelRoom/actions';
+
 import './style.scss';
-import { getMotel } from './actions';
-import FloorDetail from '../../components/FloorDetail/Loadable';
+import { Button } from '@material-ui/core';
 
 export function MotelPage(props) {
   useInjectReducer({ key: 'motelPage', reducer });
   useInjectSaga({ key: 'motelPage', saga });
-  const { id } = props.match.params;
-  const [status, setStatus] = useState('all');
-  useEffect(() => {
-    const ele = document.getElementById('ipl-progress-indicator');
-    if (ele) {
-      // fade out
-      ele.classList.add('available');
-      setTimeout(() => {
-        // remove from DOM
-        const nele = document.getElementById('ipl-progress-indicator');
-        if (nele) {
-          nele.outerHTML = '';
-        }
-      }, 2000);
-    }
-  }, []);
+  const { id } = useParams();
+  const history = useHistory();
   useEffect(() => {
     props.getMotel(id);
   }, []);
   const { motel = {} } = props.motelPage;
+  const { images = [] } = motel;
+  const items = [];
+  images.map((item, key) => {
+    items.push({
+      key,
+      src: item,
+      altText: '',
+      caption: '',
+      header: '',
+    });
+  });
   const {
-    totalRoom = 0,
-    rentedRoom = 0,
-    availableRoom = 0,
-    depositedRoom = 0,
+    _id,
+    name = '',
+    totalFloor = '',
+    totalRoom = '',
+    price = '',
+    description = '',
+    address = {},
   } = motel;
   return (
-    <div className="motel-detail-wrapper">
+    <div className="motel-page-wrapper">
       <Helmet>
         <title>MotelPage</title>
         <meta name="description" content="Description of MotelPage" />
       </Helmet>
-      <div className="status-bar">
-        <div
-          className={ClassNames('status-item total', {
-            active: status === 'all',
-          })}
+      <UncontrolledCarousel className="image-slider" items={items} />
+      <Container>
+        <div className="content">
+          <div className="name bold">{name}</div>
+          <div className="details">
+            <div className="detail totalFloor">
+              Số tầng: <span className="bold">{totalFloor}</span> tầng
+            </div>
+            <div className="detail totalRoom">
+              Tất cả: <span className="bold">{totalRoom}</span> phòng
+            </div>
+          </div>
+          <div className="price">
+            Giá giao động: <span className="red-price">{price}</span>
+          </div>
+          <div className="description">Mô tả: {description}</div>
+          <div className="address">Địa chỉ: {address.address}</div>
+        </div>
+        <Button
+          fullWidth
+          variant="contained"
+          color="primary"
           onClick={() => {
-            status !== 'all' && setStatus('all');
+            history.push(`/motel-room/${_id}`);
           }}
         >
-          <div className="content">Tất cả</div>
-          <div className="quantity">({totalRoom})</div>
-        </div>
-        <div
-          className={ClassNames('status-item rented', {
-            active: status === 'rented',
-          })}
-          onClick={() => {
-            status !== 'rented' && setStatus('rented');
-          }}
-        >
-          <div className="content">Đã thuê</div>
-          <div className="quantity">({rentedRoom})</div>
-        </div>
-        <div
-          className={ClassNames('status-item available', {
-            active: status === 'available',
-          })}
-          onClick={() => {
-            status !== 'available' && setStatus('available');
-          }}
-        >
-          <div className="content">Còn trống</div>
-          <div className="quantity">({availableRoom})</div>
-        </div>
-        <div
-          className={ClassNames('status-item deposited', {
-            active: status === 'deposited',
-          })}
-          onClick={() => {
-            status !== 'deposited' && setStatus('deposited');
-          }}
-        >
-          <div className="content">Đặt cọc</div>
-          <div className="quantity">({depositedRoom})</div>
-        </div>
-      </div>
-      <FloorDetail {...props} owner={motel.owner} status={status} />
+          Chi tiết
+        </Button>
+      </Container>
     </div>
   );
 }

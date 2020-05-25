@@ -4,7 +4,7 @@
  *
  */
 import produce from 'immer';
-import { GET_MOTEL_SUCCESS, GET_MOTEL_FAIL } from './constants';
+import { GET_MOTEL_SUCCESS, GET_MOTEL_FAIL } from '../MotelRoom/constants';
 
 export const initialState = {
   motel: {},

@@ -4,24 +4,56 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useLayoutEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Grid, Paper } from '@material-ui/core';
 import { Switch, Route } from 'react-router-dom';
 import { urlLink } from '../../helper/route';
-import LoginPage from 'containers/LoginPage/Loadable';
-import SignUpPage from 'containers/SignUpPage/Loadable';
+import LoginPage from 'containers/LoginPage';
+import SignUpPage from 'containers/SignUpPage';
+
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import { Paper } from '@material-ui/core';
+import './style.scss';
+
+const useStyles = makeStyles(theme => ({
+  paper: {
+    marginTop: theme.spacing(2),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+}));
 
 export function AuthPage() {
+  const classes = useStyles();
+  const useWindowSize = () => {
+    const [size, setSize] = useState([0, 0]);
+    useLayoutEffect(() => {
+      const updateSize = () => {
+        setSize([window.innerWidth, window.innerHeight]);
+      };
+      window.addEventListener('resize', updateSize);
+      updateSize();
+      return () => window.removeEventListener('resize', updateSize);
+    }, []);
+    return size;
+  };
+  const [width, height] = useWindowSize();
   return (
-    <div className="auth-page-wrapper">
-      <Grid container justify="center" alignContent="center">
-        <Grid item xs={8} md={6}>
+    <div
+      className="auth-page-wrapper"
+      style={{ height: width < 600 ? height - 56 : height - 64 }}
+    >
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
           <Paper
             elevation={4}
-            style={{ padding: '20px 15px', marginTop: '30px' }}
+            style={{ padding: '30px 15px', marginTop: '30px' }}
           >
             <Switch>
               <Route path={urlLink.auth.sign_in} component={LoginPage} />
@@ -29,8 +61,8 @@ export function AuthPage() {
               <Route path="/" component={LoginPage} />
             </Switch>
           </Paper>
-        </Grid>
-      </Grid>
+        </div>
+      </Container>
     </div>
   );
 }

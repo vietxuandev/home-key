@@ -4,7 +4,13 @@
  *
  */
 
-import React, { memo, useEffect, useState, Fragment } from 'react';
+import React, {
+  memo,
+  useEffect,
+  useState,
+  Fragment,
+  useLayoutEffect,
+} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -18,7 +24,6 @@ import { Link } from 'react-router-dom';
 import makeSelectHomePage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import LoadingIndicator from '../../components/LoadingIndicator';
 import MotelMarker from '../../components/MotelMarker/Loadable';
 import { getMotels } from './actions';
 import _ from 'lodash';
@@ -37,24 +42,24 @@ export function HomePage(props) {
   const [motel, setMotel] = useState({});
   useEffect(() => {
     getMotels();
-    const ele = document.getElementById('ipl-progress-indicator');
-    if (ele) {
-      // fade out
-      ele.classList.add('available');
-      setTimeout(() => {
-        // remove from DOM
-        const nele = document.getElementById('ipl-progress-indicator');
-        if (nele) {
-          nele.outerHTML = '';
-        }
-      }, 2000);
-    }
   }, []);
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: 'AIzaSyAXvk9NdxYIlpimxCnviGvuvX7LT3GodDM',
   });
   const { motels = [] } = props.homePage;
-
+  const useWindowSize = () => {
+    const [size, setSize] = useState([0, 0]);
+    useLayoutEffect(() => {
+      const updateSize = () => {
+        setSize([window.innerWidth, window.innerHeight]);
+      };
+      window.addEventListener('resize', updateSize);
+      updateSize();
+      return () => window.removeEventListener('resize', updateSize);
+    }, []);
+    return size;
+  };
+  const [width, height] = useWindowSize();
   const renderMap = () => {
     return (
       <GoogleMap
@@ -70,7 +75,10 @@ export function HomePage(props) {
     );
   };
   return (
-    <div className="home-page-wrapper">
+    <div
+      className="home-page-wrapper"
+      style={{ height: width < 600 ? height - 56 : height - 64 }}
+    >
       <Helmet>
         <title>HomePage</title>
         <meta name="description" content="Description of HomePage" />
@@ -81,9 +89,7 @@ export function HomePage(props) {
         </div>
       ) : isLoaded ? (
         renderMap()
-      ) : (
-        <LoadingIndicator />
-      )}
+      ) : null}
       {!_.isEmpty(motel) && (
         <Fragment>
           <div className="status-wrapper container">
