@@ -11,6 +11,7 @@ import {
   LOAD_REPOS_ERROR,
   CHANGE_APP_STORE_DATA,
 } from './constants';
+import _ from 'lodash';
 
 export const initialState = {
   loading: false,
