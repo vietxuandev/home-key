@@ -23,6 +23,7 @@ import { getMotel } from '../MotelRoom/actions';
 
 import './style.scss';
 import { Button } from '@material-ui/core';
+import Money from '../../helper/format';
 
 export function MotelPage(props) {
   useInjectReducer({ key: 'motelPage', reducer });
@@ -72,7 +73,7 @@ export function MotelPage(props) {
             </div>
           </div>
           <div className="price">
-            Giá giao động: <span className="red-price">{price}</span>
+            Giá giao động: <span className="red-price">{Money(price)}</span>
           </div>
           <div className="description">Mô tả: {description}</div>
           <div className="address">Địa chỉ: {address.address}</div>

@@ -21,6 +21,7 @@ import reducer from './reducer';
 import saga from './saga';
 import { getRoom } from './actions';
 import './style.scss';
+import Money from '../../helper/format';
 export function RoomPage(props) {
   useInjectReducer({ key: 'roomPage', reducer });
   useInjectSaga({ key: 'roomPage', saga });
@@ -60,14 +61,14 @@ export function RoomPage(props) {
         <Container>
           <div className="room-detail">
             <div className="name-room">THÔNG TIN PHÒNG {name}</div>
-            <div className="price-room">{price}</div>
+            <div className="price-room">{Money(price)}</div>
             <Row className="price-wrapper">
               <Col xs={6}>
                 <div className="item">
                   <div className="icon">
                     <img src="/electric.png" alt="electric" />
                   </div>
-                  <div className="price">{electricityPrice}</div>
+                  <div className="price">{Money(electricityPrice)}</div>
                 </div>
               </Col>
               <Col xs={6}>
@@ -75,7 +76,7 @@ export function RoomPage(props) {
                   <div className="icon">
                     <img src="/water.png" alt="water" />
                   </div>
-                  <div className="price">{waterPrice}</div>
+                  <div className="price">{Money(waterPrice)}</div>
                 </div>
               </Col>
             </Row>

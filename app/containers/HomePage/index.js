@@ -28,6 +28,7 @@ import MotelMarker from '../../components/MotelMarker/Loadable';
 import { getMotels } from './actions';
 import _ from 'lodash';
 import './style.scss';
+import Money from '../../helper/format';
 const mapContainerStyle = {
   height: '100%',
   width: '100%',
@@ -130,7 +131,7 @@ export function HomePage(props) {
                   <div className="col-8">
                     <div className="title">{motel.name}</div>
                     <div className="address">{motel.address.address}</div>
-                    <div className="price">{motel.price}</div>
+                    <div className="price">{Money(motel.price)}</div>
                     <div className="phone">{motel.contactPhone}</div>
                   </div>
                 </div>

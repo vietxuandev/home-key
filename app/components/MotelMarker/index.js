@@ -8,6 +8,7 @@ import React, { useState, useEffect } from 'react';
 import { OverlayView } from '@react-google-maps/api';
 import localStore from 'local-storage';
 import './style.scss';
+import Money from '../../helper/format';
 function MotelMarker(props) {
   const listReview = localStore.get('listReview');
   const [backgroundColor, setBackgroundColor] = useState('green');
@@ -47,7 +48,7 @@ function MotelMarker(props) {
         }}
       >
         <span className="price" style={{ backgroundColor }}>
-          {motel.price}
+          {Money(motel.price)}
         </span>
       </div>
     </OverlayView>
