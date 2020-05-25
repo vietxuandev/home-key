@@ -11,7 +11,6 @@ import {
   LOAD_REPOS_ERROR,
   CHANGE_APP_STORE_DATA,
 } from './constants';
-import _ from 'lodash';
 
 export const initialState = {
   loading: false,
@@ -42,12 +41,8 @@ const appReducer = (state = initialState, action) =>
         draft.error = true;
         break;
       case CHANGE_APP_STORE_DATA:
-        if (_.isArray(action.key)) {
-          draft.state.setIn(action.key, action.value);
-        } else {
-          draft[action.key] = action.value;
-          break;
-        }
+        draft[action.key] = action.value;
+        break;
     }
   });
 
