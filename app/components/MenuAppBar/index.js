@@ -5,6 +5,7 @@
  */
 
 import React, { memo, useState, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -20,9 +21,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import NavDrawer from '../NavDrawer/Loadable';
 import { useHistory } from 'react-router-dom';
 import _ from 'lodash';
+import NavDrawer from '../NavDrawer/Loadable';
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -159,7 +160,7 @@ function MenuAppBar(props) {
       onClose={handleMobileMenuClose}
     >
       {!_.isEmpty(currentUser) ? (
-        <div>
+        <>
           <MenuItem>
             <IconButton aria-label="show 5 new notifications" color="inherit">
               <Badge badgeContent={5} color="secondary">
@@ -179,7 +180,7 @@ function MenuAppBar(props) {
             </IconButton>
             <p>Tài khoản</p>
           </MenuItem>
-        </div>
+        </>
       ) : (
         <Button
           onClick={() => {
@@ -286,6 +287,9 @@ function MenuAppBar(props) {
   );
 }
 
-MenuAppBar.propTypes = {};
+MenuAppBar.propTypes = {
+  currentUser: PropTypes.object,
+  handleShowLogout: PropTypes.func,
+};
 
 export default memo(MenuAppBar);
