@@ -26,7 +26,7 @@ import { getLogout } from './actions';
 export function Logout(props) {
   useInjectReducer({ key: 'logout', reducer });
   useInjectSaga({ key: 'logout', saga });
-  const { open = false, handleClose = () => {} } = props;
+  const { open = false, handleCloseLogout = () => {} } = props;
   const handleLogout = () => {
     props.getLogout();
   };
@@ -34,7 +34,7 @@ export function Logout(props) {
     <div className="logout-wrapper">
       <Dialog
         open={open}
-        onClose={handleClose}
+        onClose={handleCloseLogout}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -45,7 +45,7 @@ export function Logout(props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleCloseLogout} color="primary">
             Hủy
           </Button>
           <Button onClick={handleLogout} color="primary">
@@ -59,7 +59,7 @@ export function Logout(props) {
 
 Logout.propTypes = {
   open: PropTypes.bool,
-  handleClose: PropTypes.func,
+  handleCloseLogout: PropTypes.func,
   getLogout: PropTypes.func,
 };
 
