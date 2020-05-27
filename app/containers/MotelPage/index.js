@@ -6,6 +6,7 @@
 
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import Container from '@material-ui/core/Container';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
@@ -18,7 +19,8 @@ import makeSelectMotelPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
-import { UncontrolledCarousel, Container } from 'reactstrap';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { Carousel } from 'react-responsive-carousel';
 import { getMotel } from '../MotelRoom/actions';
 
 import './style.scss';
@@ -35,16 +37,6 @@ export function MotelPage(props) {
   }, []);
   const { motel = {} } = props.motelPage;
   const { images = [] } = motel;
-  const items = [];
-  images.map((item, key) => {
-    items.push({
-      key,
-      src: item,
-      altText: '',
-      caption: '',
-      header: '',
-    });
-  });
   const {
     _id,
     name = '',
@@ -54,13 +46,20 @@ export function MotelPage(props) {
     description = '',
     address = {},
   } = motel;
+
   return (
     <div className="motel-page-wrapper">
       <Helmet>
         <title>MotelPage</title>
         <meta name="description" content="Description of MotelPage" />
       </Helmet>
-      <UncontrolledCarousel className="image-slider" items={items} />
+      <Carousel autoPlay showThumbs={false}>
+        {images.map(image => (
+          <div key={image}>
+            <img alt="" src={image} />
+          </div>
+        ))}
+      </Carousel>
       <Container>
         <div className="content">
           <div className="name bold">{name}</div>

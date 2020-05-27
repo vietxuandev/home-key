@@ -12,7 +12,8 @@ import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { useParams, useHistory } from 'react-router-dom';
-import { UncontrolledCarousel, Row, Col, Container } from 'reactstrap';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { Carousel } from 'react-responsive-carousel';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -22,6 +23,7 @@ import saga from './saga';
 import { getRoom } from './actions';
 import './style.scss';
 import Money from '../../helper/format';
+import { Container, Grid } from '@material-ui/core';
 export function RoomPage(props) {
   useInjectReducer({ key: 'roomPage', reducer });
   useInjectSaga({ key: 'roomPage', saga });
@@ -42,14 +44,6 @@ export function RoomPage(props) {
     images = [],
   } = room;
 
-  images.map((image, index) => ({
-    key: index,
-    src: image,
-    altText: '',
-    caption: '',
-    header: '',
-  }));
-
   return (
     <div className="room-page-wrapper">
       <Helmet>
@@ -57,33 +51,39 @@ export function RoomPage(props) {
         <meta name="description" content="Description of RoomPage" />
       </Helmet>
       <div className="infor">
-        <UncontrolledCarousel className="image-slider" items={images} />
+        <Carousel autoPlay showThumbs={false}>
+          {images.map(image => (
+            <div key={image}>
+              <img alt="" src={image} />
+            </div>
+          ))}
+        </Carousel>
         <Container>
           <div className="room-detail">
             <div className="name-room">THÔNG TIN PHÒNG {name}</div>
             <div className="price-room">{Money(price)}</div>
-            <Row className="price-wrapper">
-              <Col xs={6}>
+            <Grid container className="price-wrapper">
+              <Grid item xs={6}>
                 <div className="item">
                   <div className="icon">
                     <img src="/electric.png" alt="electric" />
                   </div>
                   <div className="price">{Money(electricityPrice)}</div>
                 </div>
-              </Col>
-              <Col xs={6}>
+              </Grid>
+              <Grid item xs={6}>
                 <div className="item">
                   <div className="icon">
                     <img src="/water.png" alt="water" />
                   </div>
                   <div className="price">{Money(waterPrice)}</div>
                 </div>
-              </Col>
-            </Row>
+              </Grid>
+            </Grid>
             <div className="furniture">
               <div className="title">Nội thất</div>
-              <Row>
-                <Col xs={4}>
+              <Grid container>
+                <Grid item xs={4}>
                   <div className="item">
                     {utilities.includes('gac_lung') && (
                       <div className="checked">
@@ -95,8 +95,8 @@ export function RoomPage(props) {
                     </div>
                     <div className="name">Gác lửng</div>
                   </div>
-                </Col>
-                <Col xs={4}>
+                </Grid>
+                <Grid item xs={4}>
                   <div className="item">
                     {utilities.includes('tu_quan_ao') && (
                       <div className="checked">
@@ -108,8 +108,8 @@ export function RoomPage(props) {
                     </div>
                     <div className="name">Tủ quần áo</div>
                   </div>
-                </Col>
-                <Col xs={4}>
+                </Grid>
+                <Grid item xs={4}>
                   <div className="item">
                     {utilities.includes('voi_hoa_sen') && (
                       <div className="checked">
@@ -121,8 +121,8 @@ export function RoomPage(props) {
                     </div>
                     <div className="name">Vòi hoa sen</div>
                   </div>
-                </Col>
-                <Col xs={4}>
+                </Grid>
+                <Grid item xs={4}>
                   <div className="item">
                     {utilities.includes('san_go') && (
                       <div className="checked">
@@ -134,8 +134,8 @@ export function RoomPage(props) {
                     </div>
                     <div className="name">Sàn gỗ</div>
                   </div>
-                </Col>
-                <Col xs={4}>
+                </Grid>
+                <Grid item xs={4}>
                   <div className="item">
                     {utilities.includes('bon_cau') && (
                       <div className="checked">
@@ -147,8 +147,8 @@ export function RoomPage(props) {
                     </div>
                     <div className="name">Bồn cầu</div>
                   </div>
-                </Col>
-                <Col xs={4}>
+                </Grid>
+                <Grid item xs={4}>
                   <div className="item">
                     {utilities.includes('bon_rua_mat') && (
                       <div className="checked">
@@ -160,13 +160,13 @@ export function RoomPage(props) {
                     </div>
                     <div className="name">Bồn rữa chén</div>
                   </div>
-                </Col>
-              </Row>
+                </Grid>
+              </Grid>
             </div>
             <div className="utilities">
               <div className="title">Tiện ích</div>
-              <Row>
-                <Col xs={4}>
+              <Grid container>
+                <Grid item xs={4}>
                   <div className="item">
                     {utilities.includes('wifi') && (
                       <div className="checked">
@@ -178,8 +178,8 @@ export function RoomPage(props) {
                     </div>
                     <div className="name">Wifi</div>
                   </div>
-                </Col>
-                <Col xs={4}>
+                </Grid>
+                <Grid item xs={4}>
                   <div className="item">
                     {utilities.includes('giat_ui') && (
                       <div className="checked">
@@ -191,8 +191,8 @@ export function RoomPage(props) {
                     </div>
                     <div className="name">Giặt sấy</div>
                   </div>
-                </Col>
-                <Col xs={4}>
+                </Grid>
+                <Grid item xs={4}>
                   <div className="item">
                     {utilities.includes('giu_xe') && (
                       <div className="checked">
@@ -204,8 +204,8 @@ export function RoomPage(props) {
                     </div>
                     <div className="name">Giữ xe</div>
                   </div>
-                </Col>
-                <Col xs={4}>
+                </Grid>
+                <Grid item xs={4}>
                   <div className="item">
                     {utilities.includes('dieu_hoa') && (
                       <div className="checked">
@@ -217,8 +217,8 @@ export function RoomPage(props) {
                     </div>
                     <div className="name">Điều hòa</div>
                   </div>
-                </Col>
-                <Col xs={4}>
+                </Grid>
+                <Grid item xs={4}>
                   <div className="item">
                     {utilities.includes('don_phong') && (
                       <div className="checked">
@@ -230,8 +230,8 @@ export function RoomPage(props) {
                     </div>
                     <div className="name">Dọn phòng</div>
                   </div>
-                </Col>
-                <Col xs={4}>
+                </Grid>
+                <Grid item xs={4}>
                   <div className="item">
                     {utilities.includes('truyen_hinh') && (
                       <div className="checked">
@@ -243,8 +243,8 @@ export function RoomPage(props) {
                     </div>
                     <div className="name">Truyền hình cáp</div>
                   </div>
-                </Col>
-              </Row>
+                </Grid>
+              </Grid>
             </div>
           </div>
         </Container>
@@ -252,8 +252,8 @@ export function RoomPage(props) {
       <div className="more-infor">
         <Container>
           <div className="title">Mô tả thêm</div>
-          <Row>
-            <Col xs={6}>
+          <Grid container>
+            <Grid item xs={6}>
               <div className="item">
                 {utilities.includes('gio_giac_tu_do') && (
                   <div className="checked">
@@ -265,8 +265,8 @@ export function RoomPage(props) {
                 </div>
                 <div className="name">Giờ giấc tự do</div>
               </div>
-            </Col>
-            <Col xs={6}>
+            </Grid>
+            <Grid item xs={6}>
               <div className="item">
                 {utilities.includes('loi_di_rieng') && (
                   <div className="checked">
@@ -278,8 +278,8 @@ export function RoomPage(props) {
                 </div>
                 <div className="name">Lối đi riêng</div>
               </div>
-            </Col>
-          </Row>
+            </Grid>
+          </Grid>
         </Container>
       </div>
       <div className="button">

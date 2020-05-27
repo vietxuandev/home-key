@@ -6,12 +6,13 @@
 
 import React, { memo, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import './style.scss';
-import { Row, Col } from 'reactstrap';
 import Room from '../Room/Loadable';
 
 function TabPanel(props) {
@@ -45,10 +46,10 @@ const useStyles = makeStyles(theme => ({
   appbar: {
     alignItems: 'center',
   },
+  floor: {
+    maxWidth: 300,
+  },
 }));
-
-const visibleStyles = { opacity: 1 };
-const hiddenStyles = { opacity: 0 };
 
 function FloorDetail(props) {
   const { floors = [] } = props;
@@ -80,16 +81,16 @@ function FloorDetail(props) {
         </AppBar>
         {floors.map((item, index) => (
           <TabPanel key={item._id} value={value} index={index}>
-            <div className="room-list">
-              <Row>
+            <Container className={classes.floor}>
+              <Grid container>
                 {item.rooms &&
                   item.rooms.map((item, index) => (
-                    <Col xs={6} key={index}>
+                    <Grid item xs={6} key={index}>
                       <Room item={item} status={props.status} />
-                    </Col>
+                    </Grid>
                   ))}
-              </Row>
-            </div>
+              </Grid>
+            </Container>
           </TabPanel>
         ))}
       </div>

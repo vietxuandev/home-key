@@ -4,23 +4,18 @@
  *
  */
 
-import React, {
-  memo,
-  useEffect,
-  useState,
-  Fragment,
-  useLayoutEffect,
-} from 'react';
+import React, { memo, useEffect, useState, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { GoogleMap, useLoadScript } from '@react-google-maps/api';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import { Link } from 'react-router-dom';
 import makeSelectHomePage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -28,7 +23,8 @@ import MotelMarker from '../../components/MotelMarker/Loadable';
 import { getMotels } from './actions';
 import _ from 'lodash';
 import './style.scss';
-import Money from '../../helper/format';
+import MotelCard from '../../components/MotelCard';
+
 const mapContainerStyle = {
   height: '100%',
   width: '100%',
@@ -91,54 +87,28 @@ export function HomePage(props) {
       ) : isLoaded ? (
         renderMap()
       ) : null}
-      {!_.isEmpty(motel) && (
-        <Fragment>
-          <div className="status-wrapper container">
-            <div className="status">
+      <div className="status-wrapper">
+        <Container maxWidth="md">
+          <Grid container spacing={1}>
+            <Grid item xs={4}>
               <div className="green-box" />
               Còn phòng
-            </div>
-            <div className="status">
+            </Grid>
+            <Grid item xs={4}>
               <div className="red-box" />
               Hết phòng
-            </div>
-            <div className="status">
+            </Grid>
+            <Grid item xs={4}>
               <div className="orange-box" />
               Sắp hết hạn
-            </div>
-          </div>
-          <div className="detail-wrapper">
-            <div className="container">
-              <button
-                onClick={() => {
-                  setMotel({});
-                }}
-                type="button"
-                className="close"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-              <Link to={`/motel/${motel._id}`}>
-                <div className="row">
-                  <div className="col-4 full-image">
-                    <img
-                      className="image"
-                      src="/defaul-room.jpg"
-                      alt="defaul room"
-                    />
-                  </div>
-                  <div className="col-8">
-                    <div className="title">{motel.name}</div>
-                    <div className="address">{motel.address.address}</div>
-                    <div className="price">{Money(motel.price)}</div>
-                    <div className="phone">{motel.contactPhone}</div>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          </div>
-        </Fragment>
+            </Grid>
+          </Grid>
+        </Container>
+      </div>
+      {!_.isEmpty(motel) && (
+        <div className="detail-wrapper">
+          <MotelCard motel={motel} setMotel={setMotel} />
+        </div>
       )}
     </div>
   );

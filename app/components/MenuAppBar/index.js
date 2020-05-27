@@ -160,7 +160,7 @@ function MenuAppBar(props) {
       onClose={handleMobileMenuClose}
     >
       {!_.isEmpty(currentUser) ? (
-        <>
+        <div>
           <MenuItem>
             <IconButton aria-label="show 5 new notifications" color="inherit">
               <Badge badgeContent={5} color="secondary">
@@ -180,7 +180,7 @@ function MenuAppBar(props) {
             </IconButton>
             <p>Tài khoản</p>
           </MenuItem>
-        </>
+        </div>
       ) : (
         <Button
           onClick={() => {

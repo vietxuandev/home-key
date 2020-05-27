@@ -99,6 +99,7 @@
     "react-helmet": "6.0.0-beta",
     "react-intl": "2.8.0",
     "react-redux": "7.0.2",
+    "react-responsive-carousel": "^3.2.7",
     "react-router-dom": "^5.1.2",
     "react-router-redux": "^4.0.8",
     "reactstrap": "^8.4.1",
