@@ -5,6 +5,7 @@
  */
 
 import React, { memo } from 'react';
+import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -22,9 +23,9 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     margin: 'auto',
     position: 'relative',
-    maxWidth: 800,
   },
   close: {
+    cursor: 'pointer',
     position: 'absolute',
     right: 0,
     top: 0,
@@ -68,6 +69,7 @@ function MotelCard(props) {
           container
           spacing={2}
           onClick={() => {
+            /* eslint no-underscore-dangle: 0 */
             history.push(`/motel/${motel._id}`);
           }}
         >
@@ -80,9 +82,9 @@ function MotelCard(props) {
               />
             </ButtonBase>
           </Grid>
-          <Grid item xs={8} sm container>
-            <Grid item xs container direction="column" spacing={2}>
-              <Grid item xs>
+          <Grid item xs={8}>
+            <Grid item xs container direction="column">
+              <Grid item>
                 <Typography
                   className={classes.name}
                   gutterBottom
@@ -112,6 +114,9 @@ function MotelCard(props) {
   );
 }
 
-MotelCard.propTypes = {};
+MotelCard.propTypes = {
+  motel: PropTypes.object,
+  setMotel: PropTypes.func,
+};
 
 export default memo(MotelCard);

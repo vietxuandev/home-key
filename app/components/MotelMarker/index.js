@@ -5,6 +5,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { OverlayView } from '@react-google-maps/api';
 import localStore from 'local-storage';
 import './style.scss';
@@ -25,36 +26,42 @@ function MotelMarker(props) {
       setBackgroundColor('red');
     }
   }, [listReview]);
+  const handelClick = () => {
+    setMotel(motel);
+    if (listReview) {
+      /* eslint no-underscore-dangle: 0 */
+      if (!listReview.includes(motel._id)) {
+        /* eslint no-underscore-dangle: 0 */
+        localStore.set('listReview', [...listReview, motel._id]);
+      }
+    } else {
+      /* eslint no-underscore-dangle: 0 */
+      localStore.set('listReview', [motel._id]);
+    }
+    setBackgroundColor('grey');
+  };
   return (
     <OverlayView
       position={motel.address.geometry.location}
       mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
     >
-      <div
+      <button
         className="motel-marker-wrapper"
-        style={{ backgroundColor: backgroundColor, color: backgroundColor }}
-        onClick={() => {
-          setMotel(motel);
-          if (listReview) {
-            if (!listReview.includes(motel._id)) {
-              /* eslint no-underscore-dangle: 0 */
-              localStore.set('listReview', [...listReview, motel._id]);
-            }
-          } else {
-            /* eslint no-underscore-dangle: 0 */
-            localStore.set('listReview', [motel._id]);
-          }
-          setBackgroundColor('grey');
-        }}
+        style={{ backgroundColor, color: backgroundColor }}
+        onClick={handelClick}
+        type="button"
       >
         <span className="price" style={{ backgroundColor }}>
           {Money(motel.price)}
         </span>
-      </div>
+      </button>
     </OverlayView>
   );
 }
 
-MotelMarker.propTypes = {};
+MotelMarker.propTypes = {
+  motel: PropTypes.object,
+  setMotel: PropTypes.func,
+};
 
 export default MotelMarker;

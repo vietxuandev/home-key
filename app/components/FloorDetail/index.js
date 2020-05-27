@@ -5,6 +5,7 @@
  */
 
 import React, { memo, useState } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
@@ -52,7 +53,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function FloorDetail(props) {
-  const { floors = [] } = props;
+  const { floors = [], status = '' } = props;
 
   const classes = useStyles();
   const [value, setValue] = useState(0);
@@ -75,18 +76,20 @@ function FloorDetail(props) {
             aria-label="scrollable auto tabs example"
           >
             {floors.map((item, index) => (
+              /* eslint no-underscore-dangle: 0 */
               <Tab key={item._id} label={item.name} {...a11yProps(index)} />
             ))}
           </Tabs>
         </AppBar>
-        {floors.map((item, index) => (
-          <TabPanel key={item._id} value={value} index={index}>
+        {floors.map((floor, index) => (
+          /* eslint no-underscore-dangle: 0 */
+          <TabPanel key={floor._id} value={value} index={index}>
             <Container className={classes.floor}>
               <Grid container>
-                {item.rooms &&
-                  item.rooms.map((item, index) => (
-                    <Grid item xs={6} key={index}>
-                      <Room item={item} status={props.status} />
+                {floor.rooms &&
+                  floor.rooms.map(item => (
+                    <Grid item xs={6} key={item._id}>
+                      <Room item={item} status={status} />
                     </Grid>
                   ))}
               </Grid>
@@ -98,6 +101,15 @@ function FloorDetail(props) {
   );
 }
 
-FloorDetail.propTypes = {};
+FloorDetail.propTypes = {
+  floors: PropTypes.object,
+  status: PropTypes.string,
+};
+
+TabPanel.propTypes = {
+  children: PropTypes.object,
+  value: PropTypes.number,
+  index: PropTypes.number,
+};
 
 export default memo(FloorDetail);

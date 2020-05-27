@@ -7,7 +7,6 @@
 import React, { memo, useEffect, useState, useLayoutEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { GoogleMap, useLoadScript } from '@react-google-maps/api';
-import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -17,22 +16,20 @@ import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
+import _ from 'lodash';
 import makeSelectHomePage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import MotelMarker from '../../components/MotelMarker/Loadable';
 import { getMotels } from './actions';
-import _ from 'lodash';
-import './style.scss';
 import MotelCard from '../../components/MotelCard';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
     position: 'fixed',
     bottom: 0,
-    left: '50%',
-    transform: 'translateX(-50%)',
+    width: '100%',
   },
   box: {
     border: '1px solid rgba(0, 0, 0, 0.2)',
@@ -44,6 +41,8 @@ const useStyles = makeStyles(theme => ({
     textShadow: '-1px 0 white, 0 1px white, 1px 0 white, 0 -1px white',
     fontWeight: 'bold',
     marginBottom: 10,
+    maxWidth: 800,
+    margin: 'auto',
   },
 }));
 
@@ -58,12 +57,11 @@ export function HomePage(props) {
   useInjectReducer({ key: 'homePage', reducer });
   useInjectSaga({ key: 'homePage', saga });
   const classes = useStyles();
-  const { getMotels = () => {} } = props;
   const [motel, setMotel] = useState({});
   useEffect(() => {
-    getMotels();
+    props.getMotels();
   }, []);
-  const { isLoaded, loadError } = useLoadScript({
+  const { isLoaded } = useLoadScript({
     googleMapsApiKey: 'AIzaSyAXvk9NdxYIlpimxCnviGvuvX7LT3GodDM',
   });
   const { motels = [] } = props.homePage;
@@ -80,20 +78,19 @@ export function HomePage(props) {
     return size;
   };
   const [width, height] = useWindowSize();
-  const renderMap = () => {
-    return (
-      <GoogleMap
-        id="maps-page"
-        mapContainerStyle={mapContainerStyle}
-        zoom={14}
-        center={center}
-      >
-        {motels.map(motel => (
-          <MotelMarker setMotel={setMotel} motel={motel} key={motel._id} />
-        ))}
-      </GoogleMap>
-    );
-  };
+  const renderMap = () => (
+    <GoogleMap
+      id="maps-page"
+      mapContainerStyle={mapContainerStyle}
+      zoom={14}
+      center={center}
+    >
+      {motels.map(item => (
+        /* eslint no-underscore-dangle: 0 */
+        <MotelMarker setMotel={setMotel} motel={item} key={item._id} />
+      ))}
+    </GoogleMap>
+  );
   return (
     <div
       className="home-page-wrapper"
@@ -103,37 +100,26 @@ export function HomePage(props) {
         <title>HomePage</title>
         <meta name="description" content="Description of HomePage" />
       </Helmet>
-      {loadError ? (
-        <div style={mapContainerStyle}>
-          Map cannot be loaded right now, sorry.
-        </div>
-      ) : isLoaded ? (
-        renderMap()
-      ) : null}
+      {isLoaded && renderMap()}
       <div className={classes.root}>
-        <Container maxWidth="lg">
-          <Grid container spacing={1} className={classes.status}>
-            <Grid item xs={4}>
-              <div
-                className={classes.box}
-                style={{ backgroundColor: 'green' }}
-              />
-              Còn phòng
-            </Grid>
-            <Grid item xs={4}>
-              <div className={classes.box} style={{ backgroundColor: 'red' }} />
-              Hết phòng
-            </Grid>
-            <Grid item xs={4}>
-              <div
-                className={classes.box}
-                style={{ backgroundColor: 'orange' }}
-              />
-              Sắp hết hạn
-            </Grid>
+        <Grid justify="center" container className={classes.status}>
+          <Grid item xs={4}>
+            <div className={classes.box} style={{ backgroundColor: 'green' }} />
+            Còn phòng
+          </Grid>
+          <Grid item xs={4}>
+            <div className={classes.box} style={{ backgroundColor: 'red' }} />
+            Hết phòng
+          </Grid>
+          <Grid item xs={4} className={classes.status}>
+            <div
+              className={classes.box}
+              style={{ backgroundColor: 'orange' }}
+            />
+            Sắp hết hạn
           </Grid>
           {!_.isEmpty(motel) && <MotelCard motel={motel} setMotel={setMotel} />}
-        </Container>
+        </Grid>
       </div>
     </div>
   );
