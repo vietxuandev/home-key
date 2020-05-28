@@ -22,7 +22,7 @@ export function* apiLogout() {
   } catch (error) {
     yield put(getLogoutFail());
   } finally {
-    yield put(saveCurrentUser(''));
+    yield put(saveCurrentUser(null));
     yield window.localStorage.clear();
     yield window.sessionStorage.clear();
     yield put(push(urlLink.home));

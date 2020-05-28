@@ -19,6 +19,7 @@ import HomePage from 'containers/HomePage/Loadable';
 import MotelPage from 'containers/MotelPage/Loadable';
 import RoomPage from 'containers/RoomPage/Loadable';
 import MotelRoom from 'containers/MotelRoom/Loadable';
+import JobPage from 'containers/JobPage/Loadable';
 import Logout from 'containers/Logout/Loadable';
 import makeSelectApp from './selectors';
 import reducer from './reducer';
@@ -35,7 +36,11 @@ axios.defaults.headers.common.Authorization = `Bearer ${localStore.get(
 export function App(props) {
   useInjectReducer({ key: 'app', reducer });
   useInjectSaga({ key: 'app', saga });
-  const { loading, currentUser, showLogout } = props.app;
+  const {
+    loading = false,
+    currentUser = {},
+    showLogout = () => {},
+  } = props.app;
   const handleCloseLogout = () => {
     props.changeStoreData('showLogout', false);
   };
@@ -55,8 +60,9 @@ export function App(props) {
         <Route exact path="/" component={HomePage} />
         <Route path="/auth" component={AuthPage} />
         <Route path="/motel/:id" component={MotelPage} />
-        <Route path="/room/:id" component={RoomPage} />
         <Route path="/motel-room/:id" component={MotelRoom} />
+        <Route path="/room/:id" component={RoomPage} />
+        <Route path="/job/:id" component={JobPage} />
       </Switch>
       {loading && <LoadingIndicator />}
       <Logout open={showLogout} handleCloseLogout={handleCloseLogout} />

@@ -5,6 +5,7 @@
  */
 
 import React, { memo, useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -21,10 +22,18 @@ import { getMotel } from './actions';
 import ClassNames from 'classnames';
 import './style.scss';
 import FloorDetail from '../../components/FloorDetail/Loadable';
+import { Grid } from '@material-ui/core';
+
+const useStyles = makeStyles(theme => ({
+  grow: {
+    flexGrow: 1,
+  },
+}));
 
 export function MotelRoom(props) {
   useInjectReducer({ key: 'motelRoom', reducer });
   useInjectSaga({ key: 'motelRoom', saga });
+  const classes = useStyles();
   const { id } = useParams();
   const [status, setStatus] = useState('all');
   useEffect(() => {
@@ -38,13 +47,15 @@ export function MotelRoom(props) {
     depositedRoom = 0,
   } = motel;
   return (
-    <div className="motel-room-wrapper">
+    <div className={'motel-room-wrapper'}>
       <Helmet>
         <title>MotelRoom</title>
         <meta name="description" content="Description of MotelRoom" />
       </Helmet>
-      <div className="status-bar">
-        <div
+      <Grid container className="status-bar">
+        <Grid
+          item
+          xs={3}
           className={ClassNames('status-item total', {
             active: status === 'all',
           })}
@@ -54,8 +65,10 @@ export function MotelRoom(props) {
         >
           <div className="content">Tất cả</div>
           <div className="quantity">({totalRoom})</div>
-        </div>
-        <div
+        </Grid>
+        <Grid
+          item
+          xs={3}
           className={ClassNames('status-item rented', {
             active: status === 'rented',
           })}
@@ -65,8 +78,10 @@ export function MotelRoom(props) {
         >
           <div className="content">Đã thuê</div>
           <div className="quantity">({rentedRoom})</div>
-        </div>
-        <div
+        </Grid>
+        <Grid
+          item
+          xs={3}
           className={ClassNames('status-item available', {
             active: status === 'available',
           })}
@@ -76,8 +91,10 @@ export function MotelRoom(props) {
         >
           <div className="content">Còn trống</div>
           <div className="quantity">({availableRoom})</div>
-        </div>
-        <div
+        </Grid>
+        <Grid
+          item
+          xs={3}
           className={ClassNames('status-item deposited', {
             active: status === 'deposited',
           })}
@@ -87,8 +104,8 @@ export function MotelRoom(props) {
         >
           <div className="content">Đặt cọc</div>
           <div className="quantity">({depositedRoom})</div>
-        </div>
-      </div>
+        </Grid>
+      </Grid>
       <FloorDetail floors={motel.floors} owner={motel.owner} status={status} />
     </div>
   );

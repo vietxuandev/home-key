@@ -1,13 +1,12 @@
 .motel-room-wrapper {
   margin-top: 5px;
   .status-bar {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     .status-item {
       display: inline-block;
-      width: 25%;
       text-align: center;
       color: white;
-      height: 50px;
+      padding: 8px;
       font-size: 14px;
       position: relative;
       cursor: pointer;
@@ -37,13 +36,13 @@
       }
       &.active {
         &::after {
-          content: '\f0d7';
+          content: "\f0d7";
           font-size: 25px;
           font-family: FontAwesome;
           position: absolute;
           left: 50%;
           transform: translateX(-50%);
-          top: 34px;
+          top: 37px;
         }
       }
     }

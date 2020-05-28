@@ -93,6 +93,7 @@ export function SignUpPage(props) {
           phoneNumber: '',
           password: '',
           confirmPassword: '',
+          role: 'customer',
           showPassword: false,
           showConfirmPassword: false,
         }}
