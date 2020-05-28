@@ -102,7 +102,7 @@ function FloorDetail(props) {
 }
 
 FloorDetail.propTypes = {
-  floors: PropTypes.object,
+  floors: PropTypes.array,
   status: PropTypes.string,
 };
 
