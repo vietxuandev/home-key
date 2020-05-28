@@ -8,6 +8,7 @@ import React, { memo, useEffect, useState, useLayoutEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { GoogleMap, useLoadScript } from '@react-google-maps/api';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -37,12 +38,16 @@ const useStyles = makeStyles(() => ({
     marginRight: 10,
     padding: '0px 15px',
   },
-  status: {
-    textShadow: '-1px 0 white, 0 1px white, 1px 0 white, 0 -1px white',
-    fontWeight: 'bold',
+  detail: {
     marginBottom: 10,
     maxWidth: 800,
     margin: 'auto',
+  },
+  status: {
+    textShadow: '-1px 0 white, 0 1px white, 1px 0 white, 0 -1px white',
+    fontWeight: 'bold',
+    padding: '0px 10px',
+    marginBottom: 10,
   },
 }));
 
@@ -102,23 +107,37 @@ export function HomePage(props) {
       </Helmet>
       {isLoaded && renderMap()}
       <div className={classes.root}>
-        <Grid justify="center" container className={classes.status}>
-          <Grid item xs={4}>
-            <div className={classes.box} style={{ backgroundColor: 'green' }} />
-            Còn phòng
+        <Grid justify="center" container className={classes.detail}>
+          <Grid item xs={12}>
+            <Grid container spacing={1} className={classes.status}>
+              <Grid item xs={4}>
+                <Box
+                  className={classes.box}
+                  style={{ backgroundColor: 'green' }}
+                />
+                <span>Còn phòng</span>
+              </Grid>
+              <Grid item xs={4}>
+                <Box
+                  className={classes.box}
+                  style={{ backgroundColor: 'red' }}
+                />
+                <span>Hết phòng</span>
+              </Grid>
+              <Grid item xs={4}>
+                <Box
+                  className={classes.box}
+                  style={{ backgroundColor: 'orange' }}
+                />
+                <span>Sắp hết hạn</span>
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item xs={4}>
-            <div className={classes.box} style={{ backgroundColor: 'red' }} />
-            Hết phòng
+          <Grid item xs={12}>
+            {!_.isEmpty(motel) && (
+              <MotelCard motel={motel} setMotel={setMotel} />
+            )}
           </Grid>
-          <Grid item xs={4} className={classes.status}>
-            <div
-              className={classes.box}
-              style={{ backgroundColor: 'orange' }}
-            />
-            Sắp hết hạn
-          </Grid>
-          {!_.isEmpty(motel) && <MotelCard motel={motel} setMotel={setMotel} />}
         </Grid>
       </div>
     </div>
