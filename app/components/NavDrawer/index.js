@@ -5,9 +5,9 @@
  */
 
 import React, { memo } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
@@ -28,10 +28,6 @@ const useStyles = makeStyles({
   },
 });
 
-function ListItemLink(props) {
-  return <ListItem component="a" {...props} />;
-}
-
 function NavDrawer(props) {
   const { open = false, setOpen = () => {} } = props;
   const classes = useStyles();
@@ -47,17 +43,17 @@ function NavDrawer(props) {
       }}
     >
       <List>
-        <ListItem button key={'home'} component={Link} to="/">
+        <ListItem button key="home" component={Link} to="/">
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
-          <ListItemText primary={'Trang chủ'} />
+          <ListItemText primary="Trang chủ" />
         </ListItem>
-        <ListItem button key={'info'}>
+        <ListItem button key="info">
           <ListItemIcon>
             <InfoIcon />
           </ListItemIcon>
-          <ListItemText primary={'Giới thiệu'} />
+          <ListItemText primary="Giới thiệu" />
         </ListItem>
       </List>
       <Divider />
@@ -86,6 +82,9 @@ function NavDrawer(props) {
   );
 }
 
-NavDrawer.propTypes = {};
+NavDrawer.propTypes = {
+  open: PropTypes.bool,
+  setOpen: PropTypes.func,
+};
 
 export default memo(NavDrawer);

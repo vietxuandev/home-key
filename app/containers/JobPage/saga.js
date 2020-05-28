@@ -1,6 +1,7 @@
-// import { take, call, put, select } from 'redux-saga/effects';
+import { takeLatest } from 'redux-saga/effects';
+import { GET_ROOM } from '../RoomPage/constants';
+import { apiGetRoom } from '../RoomPage/saga';
 
-// Individual exports for testing
 export default function* jobPageSaga() {
-  // See example in containers/HomePage/saga.js
+  yield takeLatest(GET_ROOM, apiGetRoom);
 }

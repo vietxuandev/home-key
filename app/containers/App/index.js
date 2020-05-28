@@ -20,14 +20,15 @@ import MotelPage from 'containers/MotelPage/Loadable';
 import RoomPage from 'containers/RoomPage/Loadable';
 import MotelRoom from 'containers/MotelRoom/Loadable';
 import JobPage from 'containers/JobPage/Loadable';
+import ProfilePage from 'containers/ProfilePage/Loadable';
 import Logout from 'containers/Logout/Loadable';
+import localStore from 'local-storage';
 import makeSelectApp from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import { saveCurrentUser, changeAppStoreData } from './actions';
 import MenuAppBar from '../../components/MenuAppBar/Loadable';
-import localStore from 'local-storage';
 import './style.scss';
 
 axios.defaults.headers.common.Authorization = `Bearer ${localStore.get(
@@ -48,7 +49,7 @@ export function App(props) {
     props.changeStoreData('showLogout', true);
   };
   useEffect(() => {
-    props.saveCurrentUser(localStore.get('user')) || {};
+    props.saveCurrentUser(localStore.get('user'));
   }, []);
   return (
     <div className="app-wrapper">
@@ -62,6 +63,7 @@ export function App(props) {
         <Route path="/motel/:id" component={MotelPage} />
         <Route path="/motel-room/:id" component={MotelRoom} />
         <Route path="/room/:id" component={RoomPage} />
+        <Route path="/profile" component={ProfilePage} />
         <Route path="/job/:id" component={JobPage} />
       </Switch>
       {loading && <LoadingIndicator />}

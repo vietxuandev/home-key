@@ -106,6 +106,8 @@ function MenuAppBar(props) {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+  const history = useHistory();
+
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
   };
@@ -119,11 +121,14 @@ function MenuAppBar(props) {
     handleMobileMenuClose();
   };
 
+  const handleProfile = () => {
+    handleMenuClose();
+    history.push('/profile');
+  };
+
   const handleMobileMenuOpen = event => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
-  const history = useHistory();
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -136,7 +141,7 @@ function MenuAppBar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Thông tin cá nhân</MenuItem>
+      <MenuItem onClick={handleProfile}>Thông tin cá nhân</MenuItem>
       <MenuItem
         onClick={() => {
           handleShowLogout();

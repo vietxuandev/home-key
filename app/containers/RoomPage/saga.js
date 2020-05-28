@@ -1,11 +1,11 @@
 import { put, takeLatest } from 'redux-saga/effects';
+import axios from 'axios';
 import { GET_ROOM } from './constants';
 import { urlLink } from '../../helper/route';
 import { getRoomFail, getRoomSuccess } from './actions';
-import axios from 'axios';
 import { loadRepos, reposLoaded } from '../App/actions';
 
-export function* apiGeRoom(payload) {
+export function* apiGetRoom(payload) {
   const { id } = payload;
   const requestUrl = urlLink.api.serverUrl + urlLink.api.roomDetail + id;
   yield put(loadRepos());
@@ -20,5 +20,5 @@ export function* apiGeRoom(payload) {
 }
 
 export default function* roomPageSaga() {
-  yield takeLatest(GET_ROOM, apiGeRoom);
+  yield takeLatest(GET_ROOM, apiGetRoom);
 }

@@ -17,6 +17,7 @@ export const urlLink = {
     getRoomList: '/v1/user/motelRoom/list',
     createFloor: '/v1/homeKey/floor',
     job: '/v1/homeKey/job',
+    recharge: '/v1/user/recharge',
     adminUser: '/v1/admin/user',
     adminJobList: '/v1/admin/homeKey/job/list',
     adminJobDetail: '/v1/admin/homeKey/job/',
