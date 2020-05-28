@@ -85,7 +85,6 @@ export function JobPage(props) {
     availableDate,
   } = room;
   const user = localStore.get('user') || {};
-  console.log(user);
   const classes = useStyles();
   useEffect(() => {
     props.getRoom(id);
