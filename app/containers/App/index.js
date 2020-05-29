@@ -54,7 +54,6 @@ export function App(props) {
   const {
     loading = false,
     currentUser = {},
-    showLogout = () => {},
     showAlert = false,
     alert = {},
   } = props.app;

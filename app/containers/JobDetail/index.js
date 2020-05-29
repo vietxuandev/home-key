@@ -4,11 +4,12 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
+import { useParams } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
@@ -18,11 +19,16 @@ import makeSelectJobDetail from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
+import { getJob } from './actions';
 
-export function JobDetail() {
+export function JobDetail(props) {
   useInjectReducer({ key: 'jobDetail', reducer });
   useInjectSaga({ key: 'jobDetail', saga });
-
+  const { id = '' } = useParams();
+  const { job } = props.jobDetail;
+  useEffect(() => {
+    props.getJob(id);
+  }, []);
   return (
     <div>
       <Helmet>
@@ -35,7 +41,7 @@ export function JobDetail() {
 }
 
 JobDetail.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  dispatch: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -44,7 +50,9 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    getJob: id => {
+      dispatch(getJob(id));
+    },
   };
 }
 

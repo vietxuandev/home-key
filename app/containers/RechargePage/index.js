@@ -100,7 +100,7 @@ export function RechargePage(props) {
         <title>RechargePage</title>
         <meta name="description" content="Description of RechargePage" />
       </Helmet>
-      <Container style={{ paddingTop: '20px' }}>
+      <Container style={{ paddingTop: '20px' }} maxWidth="sm">
         <Paper elevation={3} className={classes.profile}>
           <Typography component="h1" variant="h5" className={classes.title}>
             Nạp tiền

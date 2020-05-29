@@ -12,7 +12,7 @@ export function* apiGetCallBack(payload) {
   yield put(loadRepos());
   try {
     const response = yield axios.get(requestUrl);
-    yield put(getCallBackSuccess(response.data.data));
+    yield put(getCallBackSuccess(response.data));
   } catch (error) {
     yield put(getCallBackFail(error.response.data));
   } finally {
