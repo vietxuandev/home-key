@@ -14,13 +14,16 @@ import { compose } from 'redux';
 import { Switch, Route } from 'react-router-dom';
 import LoginPage from 'containers/LoginPage/Loadable';
 import SignUpPage from 'containers/SignUpPage/Loadable';
+import Bacground from '../../images/background.jpg';
 
 import { urlLink } from '../../helper/route';
-import './style.scss';
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    background: `url(${Bacground}) no-repeat center center fixed`,
+    backgroundSize: 'cover',
+  },
   paper: {
-    marginTop: theme.spacing(2),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -44,7 +47,7 @@ export function AuthPage() {
   const [width, height] = useWindowSize();
   return (
     <div
-      className="auth-page-wrapper"
+      className={classes.root}
       style={{ height: width < 600 ? height - 56 : height - 64 }}
     >
       <Container component="main" maxWidth="xs">
@@ -52,7 +55,7 @@ export function AuthPage() {
         <div className={classes.paper}>
           <Paper
             elevation={4}
-            style={{ padding: '30px 15px', marginTop: '30px' }}
+            style={{ padding: '30px 15px', marginTop: '20px' }}
           >
             <Switch>
               <Route path={urlLink.auth.sign_in} component={LoginPage} />

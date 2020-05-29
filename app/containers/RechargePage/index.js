@@ -84,7 +84,7 @@ export function RechargePage(props) {
         {({ values, errors, touched, handleSubmit, setFieldValue }) => (
           <Form onSubmit={handleSubmit} className={classes.form}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <Field name="amount">
                   {({ field }) => (
                     <TextField

@@ -27,12 +27,11 @@ import JobDetail from 'containers/JobDetail/Loadable';
 import ProfilePage from 'containers/ProfilePage/Loadable';
 import RechargePage from 'containers/RechargePage/Loadable';
 import PaymentReturn from 'containers/PaymentReturn/Loadable';
-import Logout from 'containers/Logout/Loadable';
 import localStore from 'local-storage';
 import makeSelectApp from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import { saveCurrentUser, changeAppStoreData } from './actions';
+import { saveCurrentUser, changeAppStoreData, getLogout } from './actions';
 import MenuAppBar from '../../components/MenuAppBar/Loadable';
 import AlertDialog from '../../components/AlertDialog/Loadable';
 import './style.scss';
@@ -59,11 +58,16 @@ export function App(props) {
     showAlert = false,
     alert = {},
   } = props.app;
-  const handleCloseLogout = () => {
-    props.changeStoreData('showLogout', false);
-  };
+
   const handleShowLogout = () => {
-    props.changeStoreData('showLogout', true);
+    props.changeStoreData('showAlert', true);
+    props.changeStoreData('alert', {
+      title: 'Đăng xuất',
+      content: 'Tài khoảng của bạn sẽ bị đăng xuất khỏi thiết bị!',
+      callBack: () => {
+        props.getLogout();
+      },
+    });
   };
   useEffect(() => {
     props.saveCurrentUser(localStore.get('user'));
@@ -89,7 +93,6 @@ export function App(props) {
       <Backdrop className={classes.backdrop} open={loading}>
         <CircularProgress />
       </Backdrop>
-      <Logout open={showLogout} handleCloseLogout={handleCloseLogout} />
       <AlertDialog
         open={showAlert}
         alert={alert}
@@ -118,6 +121,9 @@ function mapDispatchToProps(dispatch) {
     },
     changeStoreData(key, value) {
       dispatch(changeAppStoreData(key, value));
+    },
+    getLogout() {
+      dispatch(getLogout());
     },
   };
 }

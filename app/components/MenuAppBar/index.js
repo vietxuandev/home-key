@@ -98,7 +98,6 @@ const useStyles = makeStyles(theme => ({
 function MenuAppBar(props) {
   const { currentUser = {}, handleShowLogout = () => {} } = props;
   const [openMenu, setOpenMenu] = useState(false);
-
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);

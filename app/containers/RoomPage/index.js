@@ -288,7 +288,7 @@ export function RoomPage(props) {
             fullWidth
             variant="contained"
             color="primary"
-            disabled={room.status === 'rented'}
+            disabled={room.status !== 'available'}
             onClick={() => {
               history.push(`/job/${id}`);
             }}

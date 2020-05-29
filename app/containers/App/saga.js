@@ -23,16 +23,14 @@ export function* apiLogout() {
   } catch (error) {
     yield put(getLogoutFail());
   } finally {
-    yield put(saveCurrentUser(''));
+    yield put(saveCurrentUser(null));
     yield window.localStorage.clear();
     yield window.sessionStorage.clear();
     yield put(push(urlLink.home));
     yield put(reposLoaded());
   }
 }
-// import { take, call, put, select } from 'redux-saga/effects';
 
-// Individual exports for testing
 export default function* appSaga() {
   yield takeLatest(LOGOUT, apiLogout);
 }
