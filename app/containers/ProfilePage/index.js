@@ -20,9 +20,10 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectProfilePage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import { getProfile, getJobs } from './actions';
+import { getProfile, getJobs, deleteJob } from './actions';
 import Money from '../../helper/format';
 import { Button, IconButton, Paper } from '@material-ui/core';
+import { changeAppStoreData } from '../App/actions';
 
 export function ProfilePage(props) {
   useInjectReducer({ key: 'profilePage', reducer });
@@ -32,7 +33,16 @@ export function ProfilePage(props) {
     jobs = [],
     profile: { firstName = '', lastName = '', phoneNumber = {}, wallet = '' },
   } = props.profilePage;
-  console.log(jobs);
+  const handleDelete = id => {
+    props.changeAppStoreData('alert', {
+      title: 'Hủy đặt cọc',
+      content: 'Bạn sẽ mất tiền cọc khi hủy! Bạn thực sự muốn xóa?',
+      callBack: () => {
+        props.deleteJob(id);
+      },
+    });
+    props.changeAppStoreData('showAlert', true);
+  };
   useEffect(() => {
     props.getProfile();
     props.getJobs();
@@ -81,13 +91,23 @@ export function ProfilePage(props) {
                 <Grid item xs={6}>
                   <Grid container>
                     <Grid item xs={6}>
-                      <IconButton color="primary">
+                      <IconButton
+                        color="primary"
+                        onClick={() => {
+                          handleDelete(job._id);
+                        }}
+                      >
                         <CloseIcon />
                       </IconButton>
                       <div>Hủy cọc</div>
                     </Grid>
                     <Grid item xs={6}>
-                      <IconButton color="primary">
+                      <IconButton
+                        color="primary"
+                        onClick={() => {
+                          history.push(`/job-detail/${job._id}`);
+                        }}
+                      >
                         <TocIcon />
                       </IconButton>
                       <div>Chi tiết</div>
@@ -119,6 +139,12 @@ function mapDispatchToProps(dispatch) {
     },
     getJobs: () => {
       dispatch(getJobs());
+    },
+    deleteJob: id => {
+      dispatch(deleteJob(id));
+    },
+    changeAppStoreData: (key, value) => {
+      dispatch(changeAppStoreData(key, value));
     },
   };
 }

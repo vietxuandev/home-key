@@ -23,6 +23,7 @@ import MotelPage from 'containers/MotelPage/Loadable';
 import RoomPage from 'containers/RoomPage/Loadable';
 import MotelRoom from 'containers/MotelRoom/Loadable';
 import JobPage from 'containers/JobPage/Loadable';
+import JobDetail from 'containers/JobDetail/Loadable';
 import ProfilePage from 'containers/ProfilePage/Loadable';
 import RechargePage from 'containers/RechargePage/Loadable';
 import PaymentReturn from 'containers/PaymentReturn/Loadable';
@@ -33,6 +34,7 @@ import reducer from './reducer';
 import saga from './saga';
 import { saveCurrentUser, changeAppStoreData } from './actions';
 import MenuAppBar from '../../components/MenuAppBar/Loadable';
+import AlertDialog from '../../components/AlertDialog/Loadable';
 import './style.scss';
 
 axios.defaults.headers.common.Authorization = `Bearer ${localStore.get(
@@ -54,6 +56,8 @@ export function App(props) {
     loading = false,
     currentUser = {},
     showLogout = () => {},
+    showAlert = false,
+    alert = {},
   } = props.app;
   const handleCloseLogout = () => {
     props.changeStoreData('showLogout', false);
@@ -80,11 +84,19 @@ export function App(props) {
         <Route path="/recharge" component={RechargePage} />
         <Route path="/payment-return" component={PaymentReturn} />
         <Route path="/job/:id" component={JobPage} />
+        <Route path="/job-detail/:id" component={JobDetail} />
       </Switch>
       <Backdrop className={classes.backdrop} open={loading}>
         <CircularProgress />
       </Backdrop>
       <Logout open={showLogout} handleCloseLogout={handleCloseLogout} />
+      <AlertDialog
+        open={showAlert}
+        alert={alert}
+        handleClose={() => {
+          props.changeStoreData('showAlert', false);
+        }}
+      />
     </div>
   );
 }

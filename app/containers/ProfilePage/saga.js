@@ -1,12 +1,15 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-import { GET_PROFILE, GET_JOBS } from './constants';
+import { GET_PROFILE, GET_JOBS, DELETE_JOB } from './constants';
 import { urlLink } from '../../helper/route';
 import {
   getProfileSuccess,
   getProfileFail,
   getJobsSuccess,
   getJobsFail,
+  deleteJobSuccess,
+  deleteJobFail,
+  getJobs,
 } from './actions';
 import { loadRepos, reposLoaded } from '../App/actions';
 
@@ -36,7 +39,23 @@ export function* apiGetJobs() {
   }
 }
 
+export function* apiDeleteJob(payload) {
+  const { id = '' } = payload;
+  const requestUrl = urlLink.api.serverUrl + urlLink.api.job + `/${id}`;
+  yield put(loadRepos());
+  try {
+    const response = yield axios.delete(requestUrl);
+    yield put(deleteJobSuccess(response.data.data));
+    yield put(getJobs());
+  } catch (error) {
+    yield put(deleteJobFail(error.response.data));
+  } finally {
+    yield put(reposLoaded());
+  }
+}
+
 export default function* profilePageSaga() {
   yield takeLatest(GET_PROFILE, apiGetProfile);
   yield takeLatest(GET_JOBS, apiGetJobs);
+  yield takeLatest(DELETE_JOB, apiDeleteJob);
 }

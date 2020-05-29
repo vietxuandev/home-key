@@ -18,8 +18,12 @@ export const initialState = {
   currentUser: {},
   showLogout: false,
   showSuccess: false,
-  content: '',
-  title: '',
+  showAlert: false,
+  alert: {
+    title: '',
+    content: '',
+    callBack: '',
+  },
 };
 
 /* eslint-disable default-case, no-param-reassign */
