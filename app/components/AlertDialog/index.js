@@ -52,9 +52,7 @@ function AlertDialog(props) {
 
 AlertDialog.propTypes = {
   open: PropTypes.bool,
-  title: PropTypes.string,
-  content: PropTypes.string,
-  handleCallback: PropTypes.func,
+  alert: PropTypes.object,
   handleClose: PropTypes.func,
 };
 
