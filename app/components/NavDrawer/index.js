@@ -7,16 +7,16 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
+import _ from 'lodash';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import HomeIcon from '@material-ui/icons/Home';
 import InfoIcon from '@material-ui/icons/Info';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
@@ -29,7 +29,12 @@ const useStyles = makeStyles({
 });
 
 function NavDrawer(props) {
-  const { open = false, setOpen = () => {} } = props;
+  const {
+    open = false,
+    setOpen = () => {},
+    handleShowLogout = () => {},
+    currentUser = {},
+  } = props;
   const classes = useStyles();
   const list = () => (
     <div
@@ -57,16 +62,16 @@ function NavDrawer(props) {
         </ListItem>
       </List>
       <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
+      {!_.isEmpty(currentUser) && (
+        <List>
+          <ListItem button key="logout" onClick={() => handleShowLogout(true)}>
             <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              <ExitToAppIcon />
             </ListItemIcon>
-            <ListItemText primary={text} />
+            <ListItemText primary="Đăng xuất" />
           </ListItem>
-        ))}
-      </List>
+        </List>
+      )}
     </div>
   );
   return (

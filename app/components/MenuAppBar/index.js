@@ -287,7 +287,12 @@ function MenuAppBar(props) {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      <NavDrawer open={openMenu} setOpen={setOpenMenu} />
+      <NavDrawer
+        open={openMenu}
+        setOpen={setOpenMenu}
+        handleShowLogout={handleShowLogout}
+        currentUser={currentUser}
+      />
     </div>
   );
 }

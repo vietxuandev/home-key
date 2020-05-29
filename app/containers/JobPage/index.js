@@ -4,10 +4,12 @@
  *
  */
 import 'date-fns';
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
 
 import {
   MuiPickersUtilsProvider,
@@ -75,6 +77,8 @@ const useStyles = makeStyles(theme => ({
 export function JobPage(props) {
   useInjectReducer({ key: 'jobPage', reducer });
   useInjectSaga({ key: 'jobPage', saga });
+  const [editName, setEditName] = useState(true);
+  const [editPhone, setEditPhone] = useState(true);
   const { id } = useParams();
   const { room } = props.jobPage;
   const {
@@ -86,6 +90,9 @@ export function JobPage(props) {
   } = room;
   const user = localStore.get('user') || {};
   const classes = useStyles();
+  const handleMouseDown = event => {
+    event.preventDefault();
+  };
   useEffect(() => {
     props.getRoom(id);
   }, []);
@@ -151,6 +158,23 @@ export function JobPage(props) {
                       size="small"
                       error={!!(touched.fullName && errors.fullName)}
                       {...field}
+                      InputProps={{
+                        readOnly: editName,
+                        endAdornment: editName && (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle edit"
+                              onClick={() => {
+                                setEditName(false);
+                              }}
+                              onMouseDown={handleMouseDown}
+                              edge="end"
+                            >
+                              <EditIcon />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
                     />
                   )}
                 </Field>
@@ -167,6 +191,23 @@ export function JobPage(props) {
                       size="small"
                       error={!!(touched.phoneNumber && errors.phoneNumber)}
                       {...field}
+                      InputProps={{
+                        readOnly: editPhone,
+                        endAdornment: editPhone && (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle edit"
+                              onClick={() => {
+                                setEditPhone(false);
+                              }}
+                              onMouseDown={handleMouseDown}
+                              edge="end"
+                            >
+                              <EditIcon />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
                     />
                   )}
                 </Field>

@@ -6,9 +6,12 @@
 
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import CloseIcon from '@material-ui/icons/Close';
+import TocIcon from '@material-ui/icons/Toc';
+import Grid from '@material-ui/core/Grid';
+import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
@@ -17,24 +20,85 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectProfilePage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
-import { getProfile } from './actions';
+import { getProfile, getJobs } from './actions';
+import Money from '../../helper/format';
+import { Button, IconButton, Paper } from '@material-ui/core';
 
 export function ProfilePage(props) {
   useInjectReducer({ key: 'profilePage', reducer });
   useInjectSaga({ key: 'profilePage', saga });
-  const { profile } = props.profilePage;
+  const history = useHistory();
+  const {
+    jobs = [],
+    profile: { firstName = '', lastName = '', phoneNumber = {}, wallet = '' },
+  } = props.profilePage;
+  console.log(jobs);
   useEffect(() => {
     props.getProfile();
+    props.getJobs();
   }, []);
-  console.log(profile);
   return (
     <div>
       <Helmet>
         <title>ProfilePage</title>
         <meta name="description" content="Description of ProfilePage" />
       </Helmet>
-      <FormattedMessage {...messages.header} />
+      <Grid container>
+        <Grid item xs={12}>
+          Họ tên: {lastName} {firstName}
+        </Grid>
+        <Grid item xs={12}>
+          Số điện thoại: {phoneNumber.countryCode}
+          {phoneNumber.number}
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container>
+            <Grid item xs={6}>
+              Ví nội bộ: {Money(wallet)}
+            </Grid>
+            <Grid item xs={6}>
+              <Button
+                fullWidth
+                onClick={() => {
+                  history.push('/recharge');
+                }}
+              >
+                Nạp tiền vào ví
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid container>
+        {jobs.map(job => (
+          <Grid item xs={12} key={job._id}>
+            <Paper elevation={4} style={{ padding: 10, marginTop: '30px' }}>
+              <Grid container>
+                <Grid item xs={6}>
+                  <div>{job.fullName}</div>
+                  <div>{job.phoneNumber}</div>
+                </Grid>
+                <Grid item xs={6}>
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <IconButton color="primary">
+                        <CloseIcon />
+                      </IconButton>
+                      <div>Hủy cọc</div>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <IconButton color="primary">
+                        <TocIcon />
+                      </IconButton>
+                      <div>Chi tiết</div>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Paper>
+          </Grid>
+        ))}
+      </Grid>
     </div>
   );
 }
@@ -52,6 +116,9 @@ function mapDispatchToProps(dispatch) {
   return {
     getProfile: () => {
       dispatch(getProfile());
+    },
+    getJobs: () => {
+      dispatch(getJobs());
     },
   };
 }
