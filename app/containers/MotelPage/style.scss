@@ -1,18 +1,20 @@
 .motel-page-wrapper {
-    .image-slider {
-        margin-bottom: 20px;
-        .carousel-item {
-            height: 200px;
-            position: relative;
-            img {
-                width: auto;
-                height: auto;
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                margin: auto;
+    .carousel-root {
+        margin-bottom: 10px;
+        .slider-wrapper {
+            .slider {
+                height: 200px;
+                position: relative;
+                img {
+                    width: auto;
+                    height: auto;
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    margin: auto;
+                }
             }
         }
     }

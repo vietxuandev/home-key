@@ -53,6 +53,7 @@ const useStyles = makeStyles(theme => ({
   profile: {
     // marginTop: theme.spacing(2),
     padding: theme.spacing(2),
+    paddingBottom: 0,
   },
 }));
 

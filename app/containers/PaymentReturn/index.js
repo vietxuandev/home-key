@@ -104,7 +104,7 @@ export function PaymentReturn(props) {
               <Typography component="h1" variant="h5">
                 Thanh toán thành công
               </Typography>
-              <Typography>+{Money(amount)}</Typography>
+              <Typography>+{Money(amount / 100)}</Typography>
             </div>
           ) : (
             <div>
