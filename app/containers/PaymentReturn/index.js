@@ -66,6 +66,7 @@ export function PaymentReturn(props) {
   const { search: queryString = '' } = props.location;
   const urlParams = new URLSearchParams(queryString);
   const amount = urlParams.get('vnp_Amount') || '';
+  const paymentId = urlParams.get('vnp_TxnRef') || '';
   const { data } = props.paymentReturn;
   const history = useHistory();
   useEffect(() => {
@@ -105,6 +106,7 @@ export function PaymentReturn(props) {
                 Thanh toán thành công
               </Typography>
               <Typography>+{Money(amount / 100)}</Typography>
+              <Typography>Mã giao dịch: {paymentId}</Typography>
             </div>
           ) : (
             <div>
