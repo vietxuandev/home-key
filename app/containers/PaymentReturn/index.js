@@ -106,7 +106,6 @@ export function PaymentReturn(props) {
                 Thanh toán thành công
               </Typography>
               <Typography>+{Money(amount / 100)}</Typography>
-              <Typography>Mã giao dịch: {paymentId}</Typography>
             </div>
           ) : (
             <div>
@@ -118,6 +117,7 @@ export function PaymentReturn(props) {
               </Typography>
             </div>
           )}
+          <Typography>Mã giao dịch: {paymentId}</Typography>
           <Button
             className={classes.button}
             onClick={() => {
