@@ -6,6 +6,7 @@
 
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -24,12 +25,23 @@ import { Carousel } from 'react-responsive-carousel';
 import { getMotel } from '../MotelRoom/actions';
 
 import './style.scss';
-import { Button } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
+import PaperWrapper from '../../components/PaperWrapper/Loadable';
 import Money from '../../helper/format';
+
+const useStyles = makeStyles(theme => ({
+  title: {
+    marginBottom: 10,
+  },
+  submit: {
+    marginTop: 15,
+  },
+}));
 
 export function MotelPage(props) {
   useInjectReducer({ key: 'motelPage', reducer });
   useInjectSaga({ key: 'motelPage', saga });
+  const classes = useStyles();
   const { id } = useParams();
   const history = useHistory();
   useEffect(() => {
@@ -60,33 +72,39 @@ export function MotelPage(props) {
           </div>
         ))}
       </Carousel>
-      <Container>
-        <div className="content">
-          <div className="name bold">{name}</div>
-          <div className="details">
-            <div className="detail totalFloor">
-              Số tầng: <span className="bold">{totalFloor}</span> tầng
+      <Container maxWidth="md">
+        <PaperWrapper>
+          <div className="content">
+            <Typography className="name bold">{name}</Typography>
+            <div className="details">
+              <Typography className="detail totalFloor">
+                Số tầng: <span className="bold">{totalFloor}</span> tầng
+              </Typography>
+              <Typography className="detail totalRoom">
+                Tất cả: <span className="bold">{totalRoom}</span> phòng
+              </Typography>
             </div>
-            <div className="detail totalRoom">
-              Tất cả: <span className="bold">{totalRoom}</span> phòng
-            </div>
+            <Typography className="price">
+              Giá giao động: <span className="red-price">{Money(price)}</span>
+            </Typography>
+            <Typography className="description">
+              Mô tả: {description}
+            </Typography>
+            <Typography className="address">
+              Địa chỉ: {address.address}
+            </Typography>
           </div>
-          <div className="price">
-            Giá giao động: <span className="red-price">{Money(price)}</span>
-          </div>
-          <div className="description">Mô tả: {description}</div>
-          <div className="address">Địa chỉ: {address.address}</div>
-        </div>
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            history.push(`/motel-room/${_id}`);
-          }}
-        >
-          Chi tiết
-        </Button>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              history.push(`/motel-room/${_id}`);
+            }}
+          >
+            Chi tiết
+          </Button>
+        </PaperWrapper>
       </Container>
     </div>
   );

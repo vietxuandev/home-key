@@ -9,20 +9,15 @@ import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import CloseIcon from '@material-ui/icons/Close';
 import Money from '../../helper/format';
+import PaperWrapper from '../PaperWrapper/Loadable';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    margin: 'auto',
-    position: 'relative',
   },
   close: {
     cursor: 'pointer',
@@ -58,7 +53,7 @@ function MotelCard(props) {
   const { motel = {}, setMotel = () => {} } = props;
   return (
     <div className={classes.root}>
-      <Paper className={classes.paper}>
+      <PaperWrapper>
         <CloseIcon
           className={classes.close}
           onClick={() => {
@@ -109,7 +104,7 @@ function MotelCard(props) {
             </Grid>
           </Grid>
         </Grid>
-      </Paper>
+      </PaperWrapper>
     </div>
   );
 }

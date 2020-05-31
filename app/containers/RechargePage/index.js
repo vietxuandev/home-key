@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useEffect, useLayoutEffect, useState } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
@@ -31,7 +31,7 @@ import {
 } from '@material-ui/core';
 import NumberFormat from 'react-number-format';
 import { postRecharge } from './actions';
-import Bacground from '../../images/background.jpg';
+import PaperWrapper from '../../components/PaperWrapper/Loadable';
 
 function NumberFormatCustom(props) {
   const { inputRef, onChange, ...other } = props;
@@ -59,15 +59,8 @@ const validateForm = Yup.object().shape({
 });
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    background: `url(${Bacground}) no-repeat center center fixed`,
-    backgroundSize: 'cover',
-  },
   title: {
     marginBottom: 10,
-  },
-  profile: {
-    padding: theme.spacing(2),
   },
   submit: {
     marginTop: 15,
@@ -78,30 +71,14 @@ export function RechargePage(props) {
   useInjectReducer({ key: 'rechargePage', reducer });
   useInjectSaga({ key: 'rechargePage', saga });
   const classes = useStyles();
-  const useWindowSize = () => {
-    const [size, setSize] = useState([0, 0]);
-    useLayoutEffect(() => {
-      const updateSize = () => {
-        setSize([window.innerWidth, window.innerHeight]);
-      };
-      window.addEventListener('resize', updateSize);
-      updateSize();
-      return () => window.removeEventListener('resize', updateSize);
-    }, []);
-    return size;
-  };
-  const [width, height] = useWindowSize();
   return (
-    <div
-      className={classes.root}
-      style={{ height: width < 600 ? height - 56 : height - 64 }}
-    >
+    <div>
       <Helmet>
         <title>RechargePage</title>
         <meta name="description" content="Description of RechargePage" />
       </Helmet>
       <Container style={{ paddingTop: '20px' }} maxWidth="sm">
-        <Paper elevation={3} className={classes.profile}>
+        <PaperWrapper>
           <Typography component="h1" variant="h5" className={classes.title}>
             Nạp tiền
           </Typography>
@@ -156,7 +133,7 @@ export function RechargePage(props) {
               </Form>
             )}
           </Formik>
-        </Paper>
+        </PaperWrapper>
       </Container>
     </div>
   );

@@ -6,9 +6,9 @@
 
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -34,13 +34,20 @@ import saga from './saga';
 import { saveCurrentUser, changeAppStoreData, getLogout } from './actions';
 import MenuAppBar from '../../components/MenuAppBar/Loadable';
 import AlertDialog from '../../components/AlertDialog/Loadable';
-import './style.scss';
+import { Toolbar } from '@material-ui/core';
+import Bacground from '../../images/background.jpg';
 
 axios.defaults.headers.common.Authorization = `Bearer ${localStore.get(
   'token',
 )}`;
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    background: `url(${Bacground}) no-repeat center center fixed`,
+    backgroundSize: 'cover',
+    height: '100vh',
+    overflow: 'auto',
+  },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
@@ -71,12 +78,14 @@ export function App(props) {
   useEffect(() => {
     props.saveCurrentUser(localStore.get('user'));
   }, []);
+
   return (
-    <div className="app-wrapper">
+    <div className={classes.root}>
       <MenuAppBar
         currentUser={currentUser}
         handleShowLogout={handleShowLogout}
       />
+      <Toolbar />
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/auth" component={AuthPage} />

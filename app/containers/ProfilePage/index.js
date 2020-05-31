@@ -6,7 +6,6 @@
 
 import React, { memo, useEffect, useLayoutEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import TocIcon from '@material-ui/icons/Toc';
 import Grid from '@material-ui/core/Grid';
@@ -29,7 +28,6 @@ import reducer from './reducer';
 import saga from './saga';
 import { getProfile, getJobs, deleteJob } from './actions';
 import Money from '../../helper/format';
-import Bacground from '../../images/background.jpg';
 import {
   IconButton,
   Paper,
@@ -44,23 +42,11 @@ import {
   Container,
 } from '@material-ui/core';
 import { changeAppStoreData } from '../App/actions';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    background: `url(${Bacground}) no-repeat center center fixed`,
-    backgroundSize: 'cover',
-  },
-  profile: {
-    // marginTop: theme.spacing(2),
-    padding: theme.spacing(2),
-    paddingBottom: 0,
-  },
-}));
+import PaperWrapper from '../../components/PaperWrapper/Loadable';
 
 export function ProfilePage(props) {
   useInjectReducer({ key: 'profilePage', reducer });
   useInjectSaga({ key: 'profilePage', saga });
-  const classes = useStyles();
   const history = useHistory();
   const {
     jobs = [],
@@ -80,30 +66,14 @@ export function ProfilePage(props) {
     props.getProfile();
     props.getJobs();
   }, []);
-  const useWindowSize = () => {
-    const [size, setSize] = useState([0, 0]);
-    useLayoutEffect(() => {
-      const updateSize = () => {
-        setSize([window.innerWidth, window.innerHeight]);
-      };
-      window.addEventListener('resize', updateSize);
-      updateSize();
-      return () => window.removeEventListener('resize', updateSize);
-    }, []);
-    return size;
-  };
-  const [width, height] = useWindowSize();
   return (
-    <div
-      className={classes.root}
-      style={{ height: width < 600 ? height - 56 : height - 64 }}
-    >
+    <div>
       <Helmet>
         <title>ProfilePage</title>
         <meta name="description" content="Description of ProfilePage" />
       </Helmet>
-      <Container style={{ paddingTop: '20px' }}>
-        <Paper elevation={3} className={classes.profile}>
+      <Container maxWidth="md" style={{ paddingTop: '20px' }}>
+        <PaperWrapper>
           <Typography component="h1" variant="h5">
             Thông tin cá nhân
           </Typography>
@@ -167,11 +137,11 @@ export function ProfilePage(props) {
               </Button>
             </ListItem>
           </List>
-        </Paper>
+        </PaperWrapper>
         <Grid container align="center">
           {jobs.map(job => (
             <Grid item xs={12} key={job._id}>
-              <Paper elevation={4} style={{ padding: 10, marginTop: 10 }}>
+              <PaperWrapper style={{ padding: 10, marginTop: 10 }}>
                 <Grid container justify="center" alignItems="center">
                   <Grid item xs={6}>
                     <Typography>{job.fullName}</Typography>
@@ -204,7 +174,7 @@ export function ProfilePage(props) {
                     </Grid>
                   </Grid>
                 </Grid>
-              </Paper>
+              </PaperWrapper>
             </Grid>
           ))}
         </Grid>

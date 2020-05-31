@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useEffect, useLayoutEffect, useState } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { green, red } from '@material-ui/core/colors';
@@ -20,7 +20,6 @@ import makeSelectPaymentReturn from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import { getCallBack } from './actions';
-import Bacground from '../../images/background.jpg';
 import {
   Container,
   Paper,
@@ -31,16 +30,9 @@ import {
 import DoneIcon from '@material-ui/icons/Done';
 import CloseIcon from '@material-ui/icons/Close';
 import Money from '../../helper/format';
+import PaperWrapper from '../../components/PaperWrapper/Loadable';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    background: `url(${Bacground}) no-repeat center center fixed`,
-    backgroundSize: 'cover',
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-  },
   green: {
     color: '#fff',
     backgroundColor: green[500],
@@ -72,31 +64,15 @@ export function PaymentReturn(props) {
   useEffect(() => {
     props.getCallBack(queryString);
   }, []);
-  const useWindowSize = () => {
-    const [size, setSize] = useState([0, 0]);
-    useLayoutEffect(() => {
-      const updateSize = () => {
-        setSize([window.innerWidth, window.innerHeight]);
-      };
-      window.addEventListener('resize', updateSize);
-      updateSize();
-      return () => window.removeEventListener('resize', updateSize);
-    }, []);
-    return size;
-  };
-  const [width, height] = useWindowSize();
 
   return (
-    <div
-      className={classes.root}
-      style={{ height: width < 600 ? height - 56 : height - 64 }}
-    >
+    <div>
       <Helmet>
         <title>PaymentReturn</title>
         <meta name="description" content="Description of PaymentReturn" />
       </Helmet>
       <Container maxWidth="sm" style={{ paddingTop: '20px' }}>
-        <Paper elevation={3} className={classes.paper}>
+        <PaperWrapper style={{ textAlign: 'center' }}>
           {data.RspCode === '00' ? (
             <div>
               <Avatar className={classes.green}>
@@ -129,7 +105,7 @@ export function PaymentReturn(props) {
           >
             Về trang chủ
           </Button>
-        </Paper>
+        </PaperWrapper>
       </Container>
     </div>
   );
