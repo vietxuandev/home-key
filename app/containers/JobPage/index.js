@@ -36,6 +36,8 @@ import makeSelectJobPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import { getRoom } from '../RoomPage/actions';
+import PaperWrapper from '../../components/PaperWrapper/Loadable';
+import { Container } from '@material-ui/core';
 
 function NumberFormatCustom(props) {
   const { inputRef, onChange, ...other } = props;
@@ -102,266 +104,276 @@ export function JobPage(props) {
         <title>JobPage</title>
         <meta name="description" content="Description of JobPage" />
       </Helmet>
-      <Formik
-        initialValues={{
-          roomId: '',
-          checkInTime: new Date(),
-          fullName: !_.isEmpty(user)
-            ? `${user.lastName} ${user.firstName}`
-            : '',
-          phoneNumber: !_.isEmpty(user)
-            ? `${user.phoneNumber.countryCode}${user.phoneNumber.number}`
-            : '',
-          price,
-          bail: price / 2,
-          total: '',
-          deposit,
-          afterCheckInCost: price / 2 + deposit,
-          rentalPeriod: 3,
-        }}
-        enableReinitialize
-        onSubmit={() => {}}
-        validationSchema={validateForm}
-      >
-        {({ values, errors, touched, handleSubmit, setFieldValue }) => (
-          <Form onSubmit={handleSubmit} className={classes.form}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <KeyboardDatePicker
-                    fullWidth
-                    inputVariant="outlined"
-                    required
-                    id="date-picker-dialog"
-                    label="Ngày nhận phòng"
-                    format="dd/MM/yyyy"
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
-                    value={values.checkInTime}
-                    onChange={date => {
-                      setFieldValue('checkInTime', date);
-                    }}
-                    size="small"
-                  />
-                </MuiPickersUtilsProvider>
-              </Grid>
-              <Grid item xs={12}>
-                <Field name="fullName">
-                  {({ field }) => (
+      <Container maxWidth="md">
+        <PaperWrapper>
+          <Formik
+            initialValues={{
+              roomId: '',
+              checkInTime: new Date(),
+              fullName: !_.isEmpty(user)
+                ? `${user.lastName} ${user.firstName}`
+                : '',
+              phoneNumber: !_.isEmpty(user)
+                ? `${user.phoneNumber.countryCode}${user.phoneNumber.number}`
+                : '',
+              price,
+              bail: price / 2,
+              total: '',
+              deposit,
+              afterCheckInCost: price / 2 + deposit,
+              rentalPeriod: 3,
+            }}
+            enableReinitialize
+            onSubmit={() => {}}
+            validationSchema={validateForm}
+          >
+            {({ values, errors, touched, handleSubmit, setFieldValue }) => (
+              <Form onSubmit={handleSubmit} className={classes.form}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardDatePicker
+                        fullWidth
+                        inputVariant="outlined"
+                        required
+                        id="date-picker-dialog"
+                        label="Ngày nhận phòng"
+                        format="dd/MM/yyyy"
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                        value={values.checkInTime}
+                        onChange={date => {
+                          setFieldValue('checkInTime', date);
+                        }}
+                        size="small"
+                      />
+                    </MuiPickersUtilsProvider>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Field name="fullName">
+                      {({ field }) => (
+                        <TextField
+                          label="Người đặt phòng"
+                          variant="outlined"
+                          required
+                          helperText={touched.fullName && errors.fullName}
+                          fullWidth
+                          size="small"
+                          error={!!(touched.fullName && errors.fullName)}
+                          {...field}
+                          InputProps={{
+                            readOnly: editName,
+                            endAdornment: editName && (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  aria-label="toggle edit"
+                                  onClick={() => {
+                                    setEditName(false);
+                                  }}
+                                  onMouseDown={handleMouseDown}
+                                  edge="end"
+                                >
+                                  <EditIcon />
+                                </IconButton>
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                      )}
+                    </Field>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Field name="phoneNumber">
+                      {({ field }) => (
+                        <TextField
+                          label="Số điện thoại"
+                          variant="outlined"
+                          required
+                          helperText={touched.phoneNumber && errors.phoneNumber}
+                          fullWidth
+                          size="small"
+                          error={!!(touched.phoneNumber && errors.phoneNumber)}
+                          {...field}
+                          InputProps={{
+                            readOnly: editPhone,
+                            endAdornment: editPhone && (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  aria-label="toggle edit"
+                                  onClick={() => {
+                                    setEditPhone(false);
+                                  }}
+                                  onMouseDown={handleMouseDown}
+                                  edge="end"
+                                >
+                                  <EditIcon />
+                                </IconButton>
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                      )}
+                    </Field>
+                  </Grid>
+                  <Grid item xs={12}>
                     <TextField
-                      label="Người đặt phòng"
+                      label="Giá thuê 1 tháng"
                       variant="outlined"
-                      required
-                      helperText={touched.fullName && errors.fullName}
                       fullWidth
                       size="small"
-                      error={!!(touched.fullName && errors.fullName)}
-                      {...field}
+                      value={values.price}
                       InputProps={{
-                        readOnly: editName,
-                        endAdornment: editName && (
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label="toggle edit"
-                              onClick={() => {
-                                setEditName(false);
-                              }}
-                              onMouseDown={handleMouseDown}
-                              edge="end"
-                            >
-                              <EditIcon />
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  )}
-                </Field>
-              </Grid>
-              <Grid item xs={12}>
-                <Field name="phoneNumber">
-                  {({ field }) => (
-                    <TextField
-                      label="Số điện thoại"
-                      variant="outlined"
-                      required
-                      helperText={touched.phoneNumber && errors.phoneNumber}
-                      fullWidth
-                      size="small"
-                      error={!!(touched.phoneNumber && errors.phoneNumber)}
-                      {...field}
-                      InputProps={{
-                        readOnly: editPhone,
-                        endAdornment: editPhone && (
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label="toggle edit"
-                              onClick={() => {
-                                setEditPhone(false);
-                              }}
-                              onMouseDown={handleMouseDown}
-                              edge="end"
-                            >
-                              <EditIcon />
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  )}
-                </Field>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Giá thuê 1 tháng"
-                  variant="outlined"
-                  fullWidth
-                  size="small"
-                  value={values.price}
-                  InputProps={{
-                    readOnly: true,
-                    inputComponent: NumberFormatCustom,
-                    endAdornment: (
-                      <InputAdornment position="end">NVĐ</InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Tiền thế chân"
-                  variant="outlined"
-                  fullWidth
-                  size="small"
-                  value={values.deposit}
-                  InputProps={{
-                    readOnly: true,
-                    inputComponent: NumberFormatCustom,
-                    endAdornment: (
-                      <InputAdornment position="end">NVĐ</InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Tiền đặt cọc"
-                  variant="outlined"
-                  fullWidth
-                  size="small"
-                  value={values.bail}
-                  InputProps={{
-                    readOnly: true,
-                    inputComponent: NumberFormatCustom,
-                    endAdornment: (
-                      <InputAdornment position="end">NVĐ</InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Thanh toán khi nhận phòng"
-                  variant="outlined"
-                  fullWidth
-                  size="small"
-                  value={values.afterCheckInCost}
-                  InputProps={{
-                    readOnly: true,
-                    inputComponent: NumberFormatCustom,
-                    endAdornment: (
-                      <InputAdornment position="end">NVĐ</InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Field name="rentalPeriod">
-                  {({ field }) => (
-                    <TextField
-                      required
-                      label="Hợp đồng thuê"
-                      variant="outlined"
-                      helperText={touched.rentalPeriod && errors.rentalPeriod}
-                      fullWidth
-                      size="small"
-                      type="number"
-                      error={!!(touched.rentalPeriod && errors.rentalPeriod)}
-                      {...field}
-                      InputProps={{
+                        readOnly: true,
+                        inputComponent: NumberFormatCustom,
                         endAdornment: (
-                          <InputAdornment position="end">Tháng</InputAdornment>
+                          <InputAdornment position="end">NVĐ</InputAdornment>
                         ),
                       }}
                     />
-                  )}
-                </Field>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Trống từ"
-                  variant="outlined"
-                  fullWidth
-                  value={moment(availableDate).format('DD/MM/YYYY')}
-                  size="small"
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Giá điện"
-                  variant="outlined"
-                  fullWidth
-                  value={electricityPrice}
-                  size="small"
-                  InputProps={{
-                    readOnly: true,
-                    inputComponent: NumberFormatCustom,
-                    endAdornment: (
-                      <InputAdornment position="end">NVĐ</InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Giá nước"
-                  variant="outlined"
-                  fullWidth
-                  size="small"
-                  value={waterPrice}
-                  InputProps={{
-                    readOnly: true,
-                    inputComponent: NumberFormatCustom,
-                    endAdornment: (
-                      <InputAdornment position="end">NVĐ</InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Tiền đặt cọc"
-                  variant="outlined"
-                  fullWidth
-                  size="small"
-                  InputProps={{
-                    readOnly: true,
-                    inputComponent: NumberFormatCustom,
-                    endAdornment: (
-                      <InputAdornment position="end">NVĐ</InputAdornment>
-                    ),
-                  }}
-                  value={values.bail}
-                />
-              </Grid>
-            </Grid>
-          </Form>
-        )}
-      </Formik>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      label="Tiền thế chân"
+                      variant="outlined"
+                      fullWidth
+                      size="small"
+                      value={values.deposit}
+                      InputProps={{
+                        readOnly: true,
+                        inputComponent: NumberFormatCustom,
+                        endAdornment: (
+                          <InputAdornment position="end">NVĐ</InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      label="Tiền đặt cọc"
+                      variant="outlined"
+                      fullWidth
+                      size="small"
+                      value={values.bail}
+                      InputProps={{
+                        readOnly: true,
+                        inputComponent: NumberFormatCustom,
+                        endAdornment: (
+                          <InputAdornment position="end">NVĐ</InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      label="Thanh toán khi nhận phòng"
+                      variant="outlined"
+                      fullWidth
+                      size="small"
+                      value={values.afterCheckInCost}
+                      InputProps={{
+                        readOnly: true,
+                        inputComponent: NumberFormatCustom,
+                        endAdornment: (
+                          <InputAdornment position="end">NVĐ</InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Field name="rentalPeriod">
+                      {({ field }) => (
+                        <TextField
+                          required
+                          label="Hợp đồng thuê"
+                          variant="outlined"
+                          helperText={
+                            touched.rentalPeriod && errors.rentalPeriod
+                          }
+                          fullWidth
+                          size="small"
+                          type="number"
+                          error={
+                            !!(touched.rentalPeriod && errors.rentalPeriod)
+                          }
+                          {...field}
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                Tháng
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                      )}
+                    </Field>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      label="Trống từ"
+                      variant="outlined"
+                      fullWidth
+                      value={moment(availableDate).format('DD/MM/YYYY')}
+                      size="small"
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      label="Giá điện"
+                      variant="outlined"
+                      fullWidth
+                      value={electricityPrice}
+                      size="small"
+                      InputProps={{
+                        readOnly: true,
+                        inputComponent: NumberFormatCustom,
+                        endAdornment: (
+                          <InputAdornment position="end">NVĐ</InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      label="Giá nước"
+                      variant="outlined"
+                      fullWidth
+                      size="small"
+                      value={waterPrice}
+                      InputProps={{
+                        readOnly: true,
+                        inputComponent: NumberFormatCustom,
+                        endAdornment: (
+                          <InputAdornment position="end">NVĐ</InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      label="Tiền đặt cọc"
+                      variant="outlined"
+                      fullWidth
+                      size="small"
+                      InputProps={{
+                        readOnly: true,
+                        inputComponent: NumberFormatCustom,
+                        endAdornment: (
+                          <InputAdornment position="end">NVĐ</InputAdornment>
+                        ),
+                      }}
+                      value={values.bail}
+                    />
+                  </Grid>
+                </Grid>
+              </Form>
+            )}
+          </Formik>
+        </PaperWrapper>
+      </Container>
     </div>
   );
 }

@@ -287,18 +287,18 @@ export function RoomPage(props) {
                 </Grid>
               </Grid>
             </Container>
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              disabled={room.status !== 'available'}
-              onClick={() => {
-                history.push(`/job/${id}`);
-              }}
-            >
-              Đặt cọc
-            </Button>
           </div>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            disabled={room.status !== 'available'}
+            onClick={() => {
+              history.push(`/job/${id}`);
+            }}
+          >
+            Đặt cọc
+          </Button>
         </PaperWrapper>
       </Container>
     </div>
