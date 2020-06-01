@@ -72,7 +72,7 @@ export function ProfilePage(props) {
         <title>ProfilePage</title>
         <meta name="description" content="Description of ProfilePage" />
       </Helmet>
-      <Container maxWidth="md" style={{ paddingTop: '20px' }}>
+      <Container maxWidth="md">
         <PaperWrapper>
           <Typography component="h1" variant="h5">
             Thông tin cá nhân
