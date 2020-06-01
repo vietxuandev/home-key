@@ -48,7 +48,8 @@ const useStyles = makeStyles(theme => ({
     height: '100vh',
   },
   content: {
-    overflow: 'auto',
+    overflowY: 'scroll',
+    WebkitOverflowScrolling: 'touch',
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
