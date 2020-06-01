@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useLayoutEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -53,7 +53,19 @@ const useStyles = makeStyles(theme => ({
     color: '#fff',
   },
 }));
-
+const useWindowSize = () => {
+  const [size, setSize] = useState([0, 0]);
+  useLayoutEffect(() => {
+    const updateSize = () => {
+      setSize([window.innerWidth, window.innerHeight]);
+    };
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+  return size;
+};
+const [width, height] = useWindowSize();
 export function App(props) {
   useInjectReducer({ key: 'app', reducer });
   useInjectSaga({ key: 'app', saga });
@@ -86,28 +98,30 @@ export function App(props) {
         handleShowLogout={handleShowLogout}
       />
       <Toolbar />
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route path="/auth" component={AuthPage} />
-        <Route path="/motel/:id" component={MotelPage} />
-        <Route path="/motel-room/:id" component={MotelRoom} />
-        <Route path="/room/:id" component={RoomPage} />
-        <Route path="/profile" component={ProfilePage} />
-        <Route path="/recharge" component={RechargePage} />
-        <Route path="/payment-return" component={PaymentReturn} />
-        <Route path="/job/:id" component={JobPage} />
-        <Route path="/job-detail/:id" component={JobDetail} />
-      </Switch>
-      <Backdrop className={classes.backdrop} open={loading}>
-        <CircularProgress />
-      </Backdrop>
-      <AlertDialog
-        open={showAlert}
-        alert={alert}
-        handleClose={() => {
-          props.changeStoreData('showAlert', false);
-        }}
-      />
+      <div style={{ height: width < 600 ? height - 56 : height - 64 }}>
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route path="/auth" component={AuthPage} />
+          <Route path="/motel/:id" component={MotelPage} />
+          <Route path="/motel-room/:id" component={MotelRoom} />
+          <Route path="/room/:id" component={RoomPage} />
+          <Route path="/profile" component={ProfilePage} />
+          <Route path="/recharge" component={RechargePage} />
+          <Route path="/payment-return" component={PaymentReturn} />
+          <Route path="/job/:id" component={JobPage} />
+          <Route path="/job-detail/:id" component={JobDetail} />
+        </Switch>
+        <Backdrop className={classes.backdrop} open={loading}>
+          <CircularProgress />
+        </Backdrop>
+        <AlertDialog
+          open={showAlert}
+          alert={alert}
+          handleClose={() => {
+            props.changeStoreData('showAlert', false);
+          }}
+        />
+      </div>
     </div>
   );
 }

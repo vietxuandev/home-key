@@ -70,19 +70,6 @@ export function HomePage(props) {
     googleMapsApiKey: 'AIzaSyAXvk9NdxYIlpimxCnviGvuvX7LT3GodDM',
   });
   const { motels = [] } = props.homePage;
-  const useWindowSize = () => {
-    const [size, setSize] = useState([0, 0]);
-    useLayoutEffect(() => {
-      const updateSize = () => {
-        setSize([window.innerWidth, window.innerHeight]);
-      };
-      window.addEventListener('resize', updateSize);
-      updateSize();
-      return () => window.removeEventListener('resize', updateSize);
-    }, []);
-    return size;
-  };
-  const [width, height] = useWindowSize();
   const renderMap = () => (
     <GoogleMap
       id="maps-page"
@@ -97,10 +84,7 @@ export function HomePage(props) {
     </GoogleMap>
   );
   return (
-    <div
-      className="home-page-wrapper"
-      style={{ height: width < 600 ? height - 56 : height - 64 }}
-    >
+    <div>
       <Helmet>
         <title>HomePage</title>
         <meta name="description" content="Description of HomePage" />
