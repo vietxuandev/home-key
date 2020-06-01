@@ -46,6 +46,8 @@ const useStyles = makeStyles(theme => ({
     background: `url(${Bacground}) no-repeat center center fixed`,
     backgroundSize: 'cover',
     height: '100vh',
+  },
+  content: {
     overflow: 'auto',
   },
   backdrop: {
@@ -98,7 +100,10 @@ export function App(props) {
         handleShowLogout={handleShowLogout}
       />
       <Toolbar />
-      <div style={{ height: width < 600 ? height - 56 : height - 64 }}>
+      <div
+        className={classes.content}
+        style={{ height: width < 600 ? height - 56 : height - 64 }}
+      >
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/auth" component={AuthPage} />
