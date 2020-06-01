@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useEffect, useState, useLayoutEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { GoogleMap, useLoadScript } from '@react-google-maps/api';
 import Grid from '@material-ui/core/Grid';

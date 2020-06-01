@@ -43,13 +43,10 @@ axios.defaults.headers.common.Authorization = `Bearer ${localStore.get(
 
 const useStyles = makeStyles(theme => ({
   root: {
-    background: `url(${Bacground}) no-repeat center center fixed`,
-    backgroundSize: 'cover',
-    height: '100vh',
-  },
-  content: {
     overflowY: 'scroll',
     WebkitOverflowScrolling: 'touch',
+    background: `url(${Bacground}) no-repeat center center fixed`,
+    backgroundSize: 'cover',
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -94,14 +91,14 @@ export function App(props) {
   }, []);
 
   return (
-    <div className={classes.root}>
+    <div>
       <MenuAppBar
         currentUser={currentUser}
         handleShowLogout={handleShowLogout}
       />
       <Toolbar />
       <div
-        className={classes.content}
+        className={classes.root}
         style={{ height: width < 600 ? height - 56 : height - 64 }}
       >
         <Switch>
