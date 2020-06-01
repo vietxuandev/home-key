@@ -99,7 +99,7 @@ export function JobPage(props) {
     props.getRoom(id);
   }, []);
   return (
-    <div style={{ marginTop: 20 }}>
+    <div>
       <Helmet>
         <title>JobPage</title>
         <meta name="description" content="Description of JobPage" />
