@@ -55,19 +55,6 @@ const useStyles = makeStyles(theme => ({
     color: '#fff',
   },
 }));
-const useWindowSize = () => {
-  const [size, setSize] = useState([0, 0]);
-  useLayoutEffect(() => {
-    const updateSize = () => {
-      setSize([window.innerWidth, window.innerHeight]);
-    };
-    window.addEventListener('resize', updateSize);
-    updateSize();
-    return () => window.removeEventListener('resize', updateSize);
-  }, []);
-  return size;
-};
-const [width, height] = useWindowSize();
 export function App(props) {
   useInjectReducer({ key: 'app', reducer });
   useInjectSaga({ key: 'app', saga });
@@ -78,7 +65,19 @@ export function App(props) {
     showAlert = false,
     alert = {},
   } = props.app;
-
+  const useWindowSize = () => {
+    const [size, setSize] = useState([0, 0]);
+    useLayoutEffect(() => {
+      const updateSize = () => {
+        setSize([window.innerWidth, window.innerHeight]);
+      };
+      window.addEventListener('resize', updateSize);
+      updateSize();
+      return () => window.removeEventListener('resize', updateSize);
+    }, []);
+    return size;
+  };
+  const [width, height] = useWindowSize();
   const handleShowLogout = () => {
     props.changeStoreData('showAlert', true);
     props.changeStoreData('alert', {

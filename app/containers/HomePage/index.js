@@ -84,7 +84,7 @@ export function HomePage(props) {
     </GoogleMap>
   );
   return (
-    <div>
+    <div style={{ height: '100%' }}>
       <Helmet>
         <title>HomePage</title>
         <meta name="description" content="Description of HomePage" />
