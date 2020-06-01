@@ -43,7 +43,7 @@ axios.defaults.headers.common.Authorization = `Bearer ${localStore.get(
 
 const useStyles = makeStyles(theme => ({
   root: {
-    overflowY: 'scroll',
+    overflowY: 'auto',
     WebkitOverflowScrolling: 'touch',
     background: `url(${Bacground}) no-repeat center center fixed`,
     backgroundSize: 'cover',
