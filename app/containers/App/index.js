@@ -26,6 +26,7 @@ import JobPage from 'containers/JobPage/Loadable';
 import JobDetail from 'containers/JobDetail/Loadable';
 import ProfilePage from 'containers/ProfilePage/Loadable';
 import RechargePage from 'containers/RechargePage/Loadable';
+import Payment from 'containers/Payment/Loadable';
 import PaymentReturn from 'containers/PaymentReturn/Loadable';
 import localStore from 'local-storage';
 import makeSelectApp from './selectors';
@@ -109,6 +110,7 @@ export function App(props) {
           <Route path="/room/:id" component={RoomPage} />
           <Route path="/profile" component={ProfilePage} />
           <Route path="/recharge" component={RechargePage} />
+          <Route path="/payment/:id" component={Payment} />
           <Route path="/payment-return" component={PaymentReturn} />
           <Route path="/job/:id" component={JobPage} />
           <Route path="/job-detail/:id" component={JobDetail} />

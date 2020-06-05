@@ -37,7 +37,8 @@ import reducer from './reducer';
 import saga from './saga';
 import { getRoom } from '../RoomPage/actions';
 import PaperWrapper from '../../components/PaperWrapper/Loadable';
-import { Container } from '@material-ui/core';
+import { Container, Typography, Button } from '@material-ui/core';
+import { postJob } from './actions';
 
 function NumberFormatCustom(props) {
   const { inputRef, onChange, ...other } = props;
@@ -60,12 +61,6 @@ function NumberFormatCustom(props) {
   );
 }
 
-const validateForm = Yup.object().shape({
-  checkInTime: Yup.string().required('Vui lòng chọn ngày nhận phòng'),
-  fullName: Yup.string().required('Vui lòng nhập tên người đặt phòng'),
-  phoneNumber: Yup.string().required('Vui lòng nhập số điện thoại'),
-});
-
 const useStyles = makeStyles(theme => ({
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -83,12 +78,14 @@ export function JobPage(props) {
   const [editPhone, setEditPhone] = useState(true);
   const { id } = useParams();
   const { room } = props.jobPage;
+  const today = new Date();
   const {
-    price,
-    depositPrice: deposit,
-    electricityPrice,
-    waterPrice,
-    availableDate,
+    price = 0,
+    depositPrice = 0,
+    electricityPrice = 0,
+    waterPrice = 0,
+    availableDate = today,
+    minimumMonths = 0,
   } = room;
   const user = localStore.get('user') || {};
   const classes = useStyles();
@@ -106,10 +103,13 @@ export function JobPage(props) {
       </Helmet>
       <Container maxWidth="md">
         <PaperWrapper>
+          <Typography component="h1" variant="h5">
+            Thông tin đặt cọc
+          </Typography>
           <Formik
             initialValues={{
-              roomId: '',
-              checkInTime: new Date(),
+              roomId: id,
+              checkInTime: today,
               fullName: !_.isEmpty(user)
                 ? `${user.lastName} ${user.firstName}`
                 : '',
@@ -117,15 +117,41 @@ export function JobPage(props) {
                 ? `${user.phoneNumber.countryCode}${user.phoneNumber.number}`
                 : '',
               price,
-              bail: price / 2,
-              total: '',
-              deposit,
-              afterCheckInCost: price / 2 + deposit,
-              rentalPeriod: 3,
+              bail: depositPrice,
+              total: price + depositPrice,
+              deposit: price / 2,
+              afterCheckInCost: price / 2 + depositPrice,
+              rentalPeriod: minimumMonths,
             }}
             enableReinitialize
-            onSubmit={() => {}}
-            validationSchema={validateForm}
+            onSubmit={env => {
+              let formData = new FormData();
+              Object.keys(env).map(key => {
+                if (key === 'checkInTime') {
+                  formData.append(key, moment(env[key]).format('MM/DD/YYYY'));
+                } else {
+                  formData.append(key, env[key]);
+                }
+              });
+              props.postJob(formData);
+            }}
+            validationSchema={Yup.object().shape({
+              checkInTime: Yup.date()
+                .typeError('Ngày nhận phòng không hợp lệ')
+                .required('Vui lòng chọn ngày nhận phòng')
+                .nullable(),
+              fullName: Yup.string().required(
+                'Vui lòng nhập tên người đặt phòng',
+              ),
+              phoneNumber: Yup.string().required('Vui lòng nhập số điện thoại'),
+              rentalPeriod: Yup.number()
+                .required('Vui lòng nhập số tháng thuê')
+                .min(
+                  minimumMonths,
+                  `Số tháng thuê phải lớn hơn hoặc bằng ${minimumMonths} tháng`,
+                )
+                .integer(),
+            })}
           >
             {({ values, errors, touched, handleSubmit, setFieldValue }) => (
               <Form onSubmit={handleSubmit} className={classes.form}>
@@ -136,12 +162,16 @@ export function JobPage(props) {
                         fullWidth
                         inputVariant="outlined"
                         required
+                        disablePast
+                        maxDate={moment().add(7, 'days')}
                         id="date-picker-dialog"
                         label="Ngày nhận phòng"
                         format="dd/MM/yyyy"
                         KeyboardButtonProps={{
                           'aria-label': 'change date',
                         }}
+                        helperText={errors.checkInTime}
+                        error={Boolean(errors.checkInTime)}
                         value={values.checkInTime}
                         onChange={date => {
                           setFieldValue('checkInTime', date);
@@ -238,7 +268,7 @@ export function JobPage(props) {
                       variant="outlined"
                       fullWidth
                       size="small"
-                      value={values.deposit}
+                      value={values.bail}
                       InputProps={{
                         readOnly: true,
                         inputComponent: NumberFormatCustom,
@@ -254,7 +284,7 @@ export function JobPage(props) {
                       variant="outlined"
                       fullWidth
                       size="small"
-                      value={values.bail}
+                      value={values.deposit}
                       InputProps={{
                         readOnly: true,
                         inputComponent: NumberFormatCustom,
@@ -365,10 +395,20 @@ export function JobPage(props) {
                           <InputAdornment position="end">NVĐ</InputAdornment>
                         ),
                       }}
-                      value={values.bail}
+                      name="total"
+                      value={values.deposit}
                     />
                   </Grid>
                 </Grid>
+                <Button
+                  className={classes.submit}
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                >
+                  Đặt cọc
+                </Button>
               </Form>
             )}
           </Formik>
@@ -397,6 +437,9 @@ function mapDispatchToProps(dispatch) {
   return {
     getRoom: id => {
       dispatch(getRoom(id));
+    },
+    postJob: formData => {
+      dispatch(postJob(formData));
     },
   };
 }

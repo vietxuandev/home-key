@@ -4,4 +4,6 @@
  *
  */
 
-export const DEFAULT_ACTION = 'app/JobPage/DEFAULT_ACTION';
+export const POST_JOB = 'app/JobPage/POST_JOB';
+export const POST_JOB_SUCCESS = 'app/JobPage/POST_JOB_SUCCESS';
+export const POST_JOB_FAIL = 'app/JobPage/POST_JOB_FAIL';

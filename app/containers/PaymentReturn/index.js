@@ -20,13 +20,7 @@ import makeSelectPaymentReturn from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import { getCallBack } from './actions';
-import {
-  Container,
-  Paper,
-  Typography,
-  Avatar,
-  Button,
-} from '@material-ui/core';
+import { Container, Typography, Avatar, Button } from '@material-ui/core';
 import DoneIcon from '@material-ui/icons/Done';
 import CloseIcon from '@material-ui/icons/Close';
 import Money from '../../helper/format';

@@ -18,6 +18,7 @@ export const urlLink = {
     createFloor: '/v1/homeKey/floor',
     job: '/v1/homeKey/job',
     jobs: '/v1/homeKey/job/list',
+    pay: '/v1/payment/order/pay',
     recharge: '/v1/user/recharge',
     callBack: '/v1/payment/vnpay/callBack',
     adminUser: '/v1/admin/user',
