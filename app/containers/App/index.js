@@ -23,6 +23,7 @@ import MotelPage from 'containers/MotelPage/Loadable';
 import RoomPage from 'containers/RoomPage/Loadable';
 import MotelRoom from 'containers/MotelRoom/Loadable';
 import JobPage from 'containers/JobPage/Loadable';
+import JobVerify from 'containers/JobVerify/Loadable';
 import JobDetail from 'containers/JobDetail/Loadable';
 import ProfilePage from 'containers/ProfilePage/Loadable';
 import RechargePage from 'containers/RechargePage/Loadable';
@@ -113,6 +114,7 @@ export function App(props) {
           <Route path="/payment/:id" component={Payment} />
           <Route path="/payment-return" component={PaymentReturn} />
           <Route path="/job/:id" component={JobPage} />
+          <Route path="/job-verify/:id" component={JobVerify} />
           <Route path="/job-detail/:id" component={JobDetail} />
         </Switch>
         <Backdrop className={classes.backdrop} open={loading}>

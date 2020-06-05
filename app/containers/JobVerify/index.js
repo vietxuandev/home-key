@@ -6,9 +6,9 @@
 
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
@@ -17,7 +17,8 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectJobVerify from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
+import { Container, Typography, Grid } from '@material-ui/core';
+import PaperWrapper from '../../components/PaperWrapper/Loadable';
 
 export function JobVerify() {
   useInjectReducer({ key: 'jobVerify', reducer });
@@ -29,7 +30,44 @@ export function JobVerify() {
         <title>JobVerify</title>
         <meta name="description" content="Description of JobVerify" />
       </Helmet>
-      <FormattedMessage {...messages.header} />
+      <Container maxWidth="md">
+        <PaperWrapper>
+          <Typography component="h1" variant="h5">
+            Xác minh danh tính
+          </Typography>
+          <Typography>
+            Vui lòng cung cấp chứng minh nhân dân để xác minh danh tính
+          </Typography>
+          <Grid container justify="center" alignItems="center" spacing={1}>
+            <Grid item xs={12} md={6}>
+              <input
+                accept="image/*"
+                style={{ display: 'none' }}
+                id="contained-button-file"
+                multiple
+                type="file"
+                // onChange={this.handleUploadClick}
+              />
+              <label htmlFor="contained-button-file">
+                <AddPhotoAlternateIcon />
+              </label>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <input
+                accept="image/*"
+                style={{ display: 'none' }}
+                id="contained-button-file"
+                multiple
+                type="file"
+                // onChange={this.handleUploadClick}
+              />
+              <label htmlFor="contained-button-file">
+                <AddPhotoAlternateIcon />
+              </label>
+            </Grid>
+          </Grid>
+        </PaperWrapper>
+      </Container>
     </div>
   );
 }

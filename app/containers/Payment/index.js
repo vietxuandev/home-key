@@ -61,7 +61,8 @@ const useStyles = makeStyles(theme => ({
 
 const PaymentStatus = props => {
   const classes = useStyles();
-  const { status, paymentError } = props;
+  const { status, paymentError, id = '' } = props;
+  const { amount = 0, description = '' } = status;
   const history = useHistory();
   return (
     <PaperWrapper style={{ textAlign: 'center' }}>
@@ -96,12 +97,12 @@ const PaymentStatus = props => {
           <Typography component="h1" variant="h5">
             Thanh toán thành công
           </Typography>
-          <Typography>Số tiền: {Money(status.amount)}</Typography>
-          <Typography>Nội dung: {status.description}</Typography>
+          <Typography>Số tiền: {Money(amount)}</Typography>
+          <Typography>Nội dung: {description}</Typography>
           <Button
             className={classes.button}
             onClick={() => {
-              history.push('/');
+              history.push(`/job-verify/${id}`);
             }}
             fullWidth
             variant="contained"
@@ -189,7 +190,7 @@ export function Payment(props) {
       </Helmet>
       <Container maxWidth="md">
         {status || paymentError.length > 0 ? (
-          <PaymentStatus status={status} paymentError={paymentError} />
+          <PaymentStatus id={id} status={status} paymentError={paymentError} />
         ) : (
           <PaymentType handleOpen={handleOpen} handlePayment={handlePayment} />
         )}
