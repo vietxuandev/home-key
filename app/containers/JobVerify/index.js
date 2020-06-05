@@ -4,11 +4,12 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import { useParams, useHistory } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
@@ -17,13 +18,20 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectJobVerify from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import { Container, Typography, Grid } from '@material-ui/core';
+import { Container, Typography, Grid, Button } from '@material-ui/core';
 import PaperWrapper from '../../components/PaperWrapper/Loadable';
+import { putImages } from './actions';
 
-export function JobVerify() {
+export function JobVerify(props) {
   useInjectReducer({ key: 'jobVerify', reducer });
   useInjectSaga({ key: 'jobVerify', saga });
-
+  const { id } = useParams();
+  const [file, setFile] = useState([]);
+  const handleSubmit = () => {
+    const formData = new FormData();
+    formData.append('file', file);
+    props.putImages(id);
+  };
   return (
     <div>
       <Helmet>
@@ -66,6 +74,14 @@ export function JobVerify() {
               </label>
             </Grid>
           </Grid>
+          <Button
+            style={{ marginTop: '20px' }}
+            fullWidth
+            variant="contained"
+            color="primary"
+          >
+            Hoàn thành
+          </Button>
         </PaperWrapper>
       </Container>
     </div>
@@ -73,7 +89,7 @@ export function JobVerify() {
 }
 
 JobVerify.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  dispatch: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -82,7 +98,9 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    putImages: (id, formData) => {
+      dispatch(putImages(id, formData));
+    },
   };
 }
 
