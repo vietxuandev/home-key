@@ -105,7 +105,7 @@ export function Otp(props) {
               <Button
                 type="submit"
                 color="primary"
-                disabled={!!(!values.code || errors.code)}
+                disabled={Boolean(!values.code || errors.code)}
               >
                 Send
               </Button>

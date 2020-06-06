@@ -38,7 +38,8 @@ import saga from './saga';
 import { getRoom } from '../RoomPage/actions';
 import PaperWrapper from '../../components/PaperWrapper/Loadable';
 import { Container, Typography, Button } from '@material-ui/core';
-import { postJob } from './actions';
+import { postJob, changeStoreData } from './actions';
+import { changeAppStoreData } from '../App/actions';
 
 function NumberFormatCustom(props) {
   const { inputRef, onChange, ...other } = props;
@@ -77,14 +78,14 @@ export function JobPage(props) {
   const [editName, setEditName] = useState(true);
   const [editPhone, setEditPhone] = useState(true);
   const { id } = useParams();
-  const { room } = props.jobPage;
-  const today = new Date();
+  const { room, jobErrors } = props.jobPage;
+  console.log(jobErrors);
   const {
     price = 0,
     depositPrice = 0,
     electricityPrice = 0,
     waterPrice = 0,
-    availableDate = today,
+    availableDate = moment(),
     minimumMonths = 0,
   } = room;
   const user = localStore.get('user') || {};
@@ -94,7 +95,14 @@ export function JobPage(props) {
   };
   useEffect(() => {
     props.getRoom(id);
+    return () => {
+      props.changeStoreData('jobErrors', []);
+    };
   }, []);
+  if (jobErrors.lenght) {
+    console.log('ahihi');
+    props.changeAppStoreData('showError', true);
+  }
   return (
     <div>
       <Helmet>
@@ -109,7 +117,7 @@ export function JobPage(props) {
           <Formik
             initialValues={{
               roomId: id,
-              checkInTime: today,
+              checkInTime: moment(),
               fullName: !_.isEmpty(user)
                 ? `${user.lastName} ${user.firstName}`
                 : '',
@@ -137,6 +145,12 @@ export function JobPage(props) {
             }}
             validationSchema={Yup.object().shape({
               checkInTime: Yup.date()
+                .max(
+                  moment().add(7, 'days'),
+                  `Ngày nhận phòng phải nhỏ hơn ngày ${moment()
+                    .add(7, 'days')
+                    .format('DD/MM/YYYY')}`,
+                )
                 .typeError('Ngày nhận phòng không hợp lệ')
                 .required('Vui lòng chọn ngày nhận phòng')
                 .nullable(),
@@ -153,7 +167,14 @@ export function JobPage(props) {
                 .integer(),
             })}
           >
-            {({ values, errors, touched, handleSubmit, setFieldValue }) => (
+            {({
+              values,
+              errors,
+              touched,
+              handleSubmit,
+              setFieldValue,
+              isValid,
+            }) => (
               <Form onSubmit={handleSubmit} className={classes.form}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
@@ -164,6 +185,7 @@ export function JobPage(props) {
                         required
                         disablePast
                         maxDate={moment().add(7, 'days')}
+                        minDate={moment()}
                         id="date-picker-dialog"
                         label="Ngày nhận phòng"
                         format="dd/MM/yyyy"
@@ -190,7 +212,7 @@ export function JobPage(props) {
                           helperText={touched.fullName && errors.fullName}
                           fullWidth
                           size="small"
-                          error={!!(touched.fullName && errors.fullName)}
+                          error={Boolean(touched.fullName && errors.fullName)}
                           {...field}
                           InputProps={{
                             readOnly: editName,
@@ -223,7 +245,9 @@ export function JobPage(props) {
                           helperText={touched.phoneNumber && errors.phoneNumber}
                           fullWidth
                           size="small"
-                          error={!!(touched.phoneNumber && errors.phoneNumber)}
+                          error={Boolean(
+                            touched.phoneNumber && errors.phoneNumber,
+                          )}
                           {...field}
                           InputProps={{
                             readOnly: editPhone,
@@ -323,9 +347,9 @@ export function JobPage(props) {
                           fullWidth
                           size="small"
                           type="number"
-                          error={
-                            !!(touched.rentalPeriod && errors.rentalPeriod)
-                          }
+                          error={Boolean(
+                            touched.rentalPeriod && errors.rentalPeriod,
+                          )}
                           {...field}
                           InputProps={{
                             endAdornment: (
@@ -406,6 +430,7 @@ export function JobPage(props) {
                   variant="contained"
                   color="primary"
                   type="submit"
+                  disabled={!isValid}
                 >
                   Đặt cọc
                 </Button>
@@ -440,6 +465,12 @@ function mapDispatchToProps(dispatch) {
     },
     postJob: formData => {
       dispatch(postJob(formData));
+    },
+    changeAppStoreData: (key, value) => {
+      dispatch(changeAppStoreData(key, value));
+    },
+    changeStoreData: (key, value) => {
+      dispatch(changeStoreData(key, value));
     },
   };
 }

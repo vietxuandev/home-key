@@ -1,0 +1,23 @@
+.job-detail-wapper {
+    .image-wrapper {
+        margin-top: 20px;
+        height: 0;
+        width: 100%;
+        padding-bottom: 60%;
+        position: relative;
+        overflow: hidden;
+        border: 1px dashed #d9d9d9;
+        border-radius: 8px;
+        img {
+            width: 100%;
+            height: auto;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            z-index: 1;
+        }
+    }
+}

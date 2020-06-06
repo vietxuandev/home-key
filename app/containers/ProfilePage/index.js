@@ -141,7 +141,7 @@ export function ProfilePage(props) {
         <Grid container align="center">
           {jobs.map(job => (
             <Grid item xs={12} key={job._id}>
-              <PaperWrapper style={{ padding: 10, marginTop: 10 }}>
+              <PaperWrapper style={{ marginTop: 0 }}>
                 <Grid container justify="center" alignItems="center">
                   <Grid item xs={6}>
                     <Typography>{job.fullName}</Typography>

@@ -82,7 +82,15 @@ export function LoginPage(props) {
         onSubmit={env => props.postLogin(env)}
         validationSchema={validateForm}
       >
-        {({ values, errors, touched, handleSubmit, setFieldValue }) => (
+        {({
+          values,
+          errors,
+          touched,
+          handleSubmit,
+          setFieldValue,
+          dirty,
+          isValid,
+        }) => (
           <Form onSubmit={handleSubmit} className={classes.form}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -95,7 +103,7 @@ export function LoginPage(props) {
                       helperText={touched.phoneNumber && errors.phoneNumber}
                       fullWidth
                       size="small"
-                      error={!!(touched.phoneNumber && errors.phoneNumber)}
+                      error={Boolean(touched.phoneNumber && errors.phoneNumber)}
                       {...field}
                     />
                   )}
@@ -135,7 +143,7 @@ export function LoginPage(props) {
                           </InputAdornment>
                         ),
                       }}
-                      error={!!(touched.password && errors.password)}
+                      error={Boolean(touched.password && errors.password)}
                       {...field}
                     />
                   )}
@@ -148,9 +156,7 @@ export function LoginPage(props) {
               variant="contained"
               color="primary"
               type="submit"
-              disabled={
-                !values.phoneNumber || !values.password || !_.isEmpty(errors)
-              }
+              disabled={!(isValid && dirty)}
             >
               Đăng nhập
             </Button>

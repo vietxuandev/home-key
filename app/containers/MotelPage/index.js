@@ -65,15 +65,15 @@ export function MotelPage(props) {
         <title>MotelPage</title>
         <meta name="description" content="Description of MotelPage" />
       </Helmet>
-      <Carousel autoPlay showThumbs={false}>
-        {images.map(image => (
-          <div key={image}>
-            <img alt="" src={image} />
-          </div>
-        ))}
-      </Carousel>
       <Container maxWidth="md">
         <PaperWrapper>
+          <Carousel autoPlay showThumbs={false}>
+            {images.map(image => (
+              <div key={image}>
+                <img alt="" src={image} />
+              </div>
+            ))}
+          </Carousel>
           <div className="content">
             <Typography className="name bold">{name}</Typography>
             <div className="details">

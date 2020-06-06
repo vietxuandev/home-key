@@ -1,6 +1,6 @@
 /**
  *
- * AlertDialog
+ * ErrorDialog
  *
  */
 
@@ -13,16 +13,12 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 
-function AlertDialog(props) {
+function ErrorDialog(props) {
   const {
     open = false,
-    alert: { title = '', content = '', callBack = () => {} },
+    error: { title = '', content = '' },
     handleClose = () => {},
   } = props;
-  const handleClick = () => {
-    callBack();
-    handleClose();
-  };
   return (
     <Dialog
       open={open}
@@ -38,9 +34,6 @@ function AlertDialog(props) {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
-          Hủy
-        </Button>
-        <Button onClick={handleClick} color="primary">
           Đồng ý
         </Button>
       </DialogActions>
@@ -48,10 +41,6 @@ function AlertDialog(props) {
   );
 }
 
-AlertDialog.propTypes = {
-  open: PropTypes.bool,
-  alert: PropTypes.object,
-  handleClose: PropTypes.func,
-};
+ErrorDialog.propTypes = {};
 
-export default memo(AlertDialog);
+export default memo(ErrorDialog);

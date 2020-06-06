@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import { connect } from 'react-redux';
@@ -18,22 +18,42 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectJobVerify from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import { Container, Typography, Grid, Button } from '@material-ui/core';
+import {
+  Container,
+  Typography,
+  Grid,
+  Button,
+  IconButton,
+} from '@material-ui/core';
 import PaperWrapper from '../../components/PaperWrapper/Loadable';
-import { putImages } from './actions';
+import { putImages, changeStoreData } from './actions';
+import DeleteIcon from '@material-ui/icons/Delete';
+import './style.scss';
 
 export function JobVerify(props) {
   useInjectReducer({ key: 'jobVerify', reducer });
   useInjectSaga({ key: 'jobVerify', saga });
   const { id } = useParams();
-  const [file, setFile] = useState([]);
-  const handleSubmit = () => {
-    const formData = new FormData();
-    formData.append('file', file);
-    props.putImages(id);
-  };
+  const [frontID, setFrontID] = useState('');
+  const [backID, setBackID] = useState('');
+  const [frontIDUrl, setFrontIDUrl] = useState('');
+  const [backIDUrl, setBackIDUrl] = useState('');
+  useEffect(() => {
+    if (frontID) {
+      setFrontIDUrl(URL.createObjectURL(frontID));
+    } else {
+      setFrontIDUrl('');
+    }
+  }, [frontID]);
+  useEffect(() => {
+    if (backID) {
+      setBackIDUrl(URL.createObjectURL(backID));
+    } else {
+      setBackIDUrl('');
+    }
+  }, [backID]);
   return (
-    <div>
+    <div className="job-verify-wrapper">
       <Helmet>
         <title>JobVerify</title>
         <meta name="description" content="Description of JobVerify" />
@@ -46,32 +66,60 @@ export function JobVerify(props) {
           <Typography>
             Vui lòng cung cấp chứng minh nhân dân để xác minh danh tính
           </Typography>
-          <Grid container justify="center" alignItems="center" spacing={1}>
-            <Grid item xs={12} md={6}>
-              <input
-                accept="image/*"
-                style={{ display: 'none' }}
-                id="contained-button-file"
-                multiple
-                type="file"
-                // onChange={this.handleUploadClick}
-              />
-              <label htmlFor="contained-button-file">
-                <AddPhotoAlternateIcon />
-              </label>
+          <Grid container justify="center" alignItems="center" spacing={2}>
+            <Grid item xs={6}>
+              <div className="image-wrapper">
+                {frontIDUrl && <img src={frontIDUrl} alt="front identify" />}
+                <input
+                  accept="image/*"
+                  id="frontID"
+                  type="file"
+                  onChange={e => {
+                    setFrontID(e.target.files[0]);
+                  }}
+                />
+                {frontIDUrl ? (
+                  <IconButton
+                    onClick={() => {
+                      setFrontID('');
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                ) : (
+                  <label className="label-input" htmlFor="frontID">
+                    <AddPhotoAlternateIcon />
+                    <Typography>Mặt trước</Typography>
+                  </label>
+                )}
+              </div>
             </Grid>
-            <Grid item xs={12} md={6}>
-              <input
-                accept="image/*"
-                style={{ display: 'none' }}
-                id="contained-button-file"
-                multiple
-                type="file"
-                // onChange={this.handleUploadClick}
-              />
-              <label htmlFor="contained-button-file">
-                <AddPhotoAlternateIcon />
-              </label>
+            <Grid item xs={6}>
+              <div className="image-wrapper">
+                {backIDUrl && <img src={backIDUrl} alt="back identify" />}
+                <input
+                  accept="image/*"
+                  id="backID"
+                  type="file"
+                  onChange={e => {
+                    setBackID(e.target.files[0]);
+                  }}
+                />
+                {backIDUrl ? (
+                  <IconButton
+                    onClick={() => {
+                      setBackID('');
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                ) : (
+                  <label className="label-input" htmlFor="backID">
+                    <AddPhotoAlternateIcon />
+                    <Typography>Mặt Sau</Typography>
+                  </label>
+                )}
+              </div>
             </Grid>
           </Grid>
           <Button
@@ -79,6 +127,13 @@ export function JobVerify(props) {
             fullWidth
             variant="contained"
             color="primary"
+            disabled={!Boolean(frontID && backID)}
+            onClick={() => {
+              const formData = new FormData();
+              formData.append('file', frontID);
+              formData.append('file', backID);
+              props.putImages(id, formData);
+            }}
           >
             Hoàn thành
           </Button>
@@ -100,6 +155,9 @@ function mapDispatchToProps(dispatch) {
   return {
     putImages: (id, formData) => {
       dispatch(putImages(id, formData));
+    },
+    changeStoreData: (key, value) => {
+      dispatch(changeStoreData(key, value));
     },
   };
 }

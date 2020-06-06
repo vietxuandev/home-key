@@ -7,7 +7,7 @@ import produce from 'immer';
 import { PUT_PAY_FAIL, PUT_PAY_SUCCESS, CHANGE_STORE_DATA } from './constants';
 
 export const initialState = {
-  status: null,
+  status: {},
   paymentError: [],
 };
 

@@ -105,7 +105,7 @@ export function RechargePage(props) {
                           helperText={touched.amount && errors.amount}
                           fullWidth
                           size="small"
-                          error={!!(touched.amount && errors.amount)}
+                          error={Boolean(touched.amount && errors.amount)}
                           {...field}
                           InputProps={{
                             inputComponent: NumberFormatCustom,

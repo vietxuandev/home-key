@@ -24,6 +24,10 @@ export const initialState = {
     content: '',
     callBack: '',
   },
+  error: {
+    title: '',
+    content: '',
+  },
 };
 
 /* eslint-disable default-case, no-param-reassign */

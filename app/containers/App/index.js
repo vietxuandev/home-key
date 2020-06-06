@@ -36,6 +36,7 @@ import saga from './saga';
 import { saveCurrentUser, changeAppStoreData, getLogout } from './actions';
 import MenuAppBar from '../../components/MenuAppBar/Loadable';
 import AlertDialog from '../../components/AlertDialog/Loadable';
+import ErrorDialog from '../../components/ErrorDialog/Loadable';
 import { Toolbar } from '@material-ui/core';
 import Bacground from '../../images/background.jpg';
 
@@ -63,7 +64,9 @@ export function App(props) {
     loading = false,
     currentUser = {},
     showAlert = false,
+    showError = false,
     alert = {},
+    error = {},
   } = props.app;
   const useWindowSize = () => {
     const [size, setSize] = useState([0, 0]);
@@ -125,6 +128,13 @@ export function App(props) {
           alert={alert}
           handleClose={() => {
             props.changeStoreData('showAlert', false);
+          }}
+        />
+        <ErrorDialog
+          open={showError}
+          error={error}
+          handleClose={() => {
+            props.changeStoreData('showError', false);
           }}
         />
       </div>

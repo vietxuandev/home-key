@@ -13,6 +13,7 @@ import CreditCardIcon from '@material-ui/icons/CreditCard';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { useParams, useHistory } from 'react-router-dom';
+import _ from 'lodash';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
@@ -61,8 +62,8 @@ const useStyles = makeStyles(theme => ({
 
 const PaymentStatus = props => {
   const classes = useStyles();
-  const { status, paymentError, id = '' } = props;
-  const { amount = 0, description = '' } = status;
+  const { status, paymentError } = props;
+  const { amount = 0, description = '', job = '' } = status;
   const history = useHistory();
   return (
     <PaperWrapper style={{ textAlign: 'center' }}>
@@ -102,7 +103,7 @@ const PaymentStatus = props => {
           <Button
             className={classes.button}
             onClick={() => {
-              history.push(`/job-verify/${id}`);
+              history.push(`/job-verify/${job}`);
             }}
             fullWidth
             variant="contained"
@@ -189,8 +190,8 @@ export function Payment(props) {
         <meta name="description" content="Description of Payment" />
       </Helmet>
       <Container maxWidth="md">
-        {status || paymentError.length > 0 ? (
-          <PaymentStatus id={id} status={status} paymentError={paymentError} />
+        {!_.isEmpty(status) || paymentError.length ? (
+          <PaymentStatus status={status} paymentError={paymentError} />
         ) : (
           <PaymentType handleOpen={handleOpen} handlePayment={handlePayment} />
         )}

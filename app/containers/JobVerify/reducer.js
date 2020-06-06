@@ -4,15 +4,18 @@
  *
  */
 import produce from 'immer';
-import { DEFAULT_ACTION } from './constants';
+import { CHANGE_STORE_DATA } from './constants';
 
-export const initialState = {};
+export const initialState = {
+  file: [],
+};
 
 /* eslint-disable default-case, no-param-reassign */
 const jobVerifyReducer = (state = initialState, action) =>
-  produce(state, (/* draft */) => {
+  produce(state, draft => {
     switch (action.type) {
-      case DEFAULT_ACTION:
+      case CHANGE_STORE_DATA:
+        draft[action.key] = action.value;
         break;
     }
   });

@@ -103,7 +103,15 @@ export function SignUpPage(props) {
         }}
         validationSchema={validateForm}
       >
-        {({ values, errors, touched, handleSubmit, setFieldValue }) => (
+        {({
+          values,
+          errors,
+          touched,
+          handleSubmit,
+          setFieldValue,
+          dirty,
+          isValid,
+        }) => (
           <Form onSubmit={handleSubmit} className={classes.form}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -116,7 +124,7 @@ export function SignUpPage(props) {
                       helperText={touched.firstName && errors.firstName}
                       fullWidth
                       size="small"
-                      error={!!(touched.firstName && errors.firstName)}
+                      error={Boolean(touched.firstName && errors.firstName)}
                       {...field}
                     />
                   )}
@@ -132,7 +140,7 @@ export function SignUpPage(props) {
                       helperText={touched.lastName && errors.lastName}
                       fullWidth
                       size="small"
-                      error={!!(touched.lastName && errors.lastName)}
+                      error={Boolean(touched.lastName && errors.lastName)}
                       {...field}
                     />
                   )}
@@ -148,7 +156,7 @@ export function SignUpPage(props) {
                       helperText={touched.phoneNumber && errors.phoneNumber}
                       fullWidth
                       size="small"
-                      error={!!(touched.phoneNumber && errors.phoneNumber)}
+                      error={Boolean(touched.phoneNumber && errors.phoneNumber)}
                       {...field}
                     />
                   )}
@@ -188,7 +196,7 @@ export function SignUpPage(props) {
                           </InputAdornment>
                         ),
                       }}
-                      error={!!(touched.password && errors.password)}
+                      error={Boolean(touched.password && errors.password)}
                       {...field}
                     />
                   )}
@@ -230,9 +238,9 @@ export function SignUpPage(props) {
                           </InputAdornment>
                         ),
                       }}
-                      error={
-                        !!(touched.confirmPassword && errors.confirmPassword)
-                      }
+                      error={Boolean(
+                        touched.confirmPassword && errors.confirmPassword,
+                      )}
                       {...field}
                     />
                   )}
@@ -245,9 +253,7 @@ export function SignUpPage(props) {
               variant="contained"
               color="primary"
               type="submit"
-              disabled={
-                !values.phoneNumber || !values.password || !_.isEmpty(errors)
-              }
+              disabled={!(isValid && dirty)}
             >
               Đăng ký
             </Button>
