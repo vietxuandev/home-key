@@ -40,6 +40,7 @@ import PaperWrapper from '../../components/PaperWrapper/Loadable';
 import { Container, Typography, Button } from '@material-ui/core';
 import { postJob, changeStoreData } from './actions';
 import { changeAppStoreData } from '../App/actions';
+import ErrorDialog from '../../components/ErrorDialog';
 
 function NumberFormatCustom(props) {
   const { inputRef, onChange, ...other } = props;
@@ -78,8 +79,8 @@ export function JobPage(props) {
   const [editName, setEditName] = useState(true);
   const [editPhone, setEditPhone] = useState(true);
   const { id } = useParams();
-  const { room, jobErrors } = props.jobPage;
-  console.log(jobErrors);
+  const { room, jobError = {}, showError = false } = props.jobPage;
+  const { errorMessage = '' } = jobError;
   const {
     price = 0,
     depositPrice = 0,
@@ -99,10 +100,7 @@ export function JobPage(props) {
       props.changeStoreData('jobErrors', []);
     };
   }, []);
-  if (jobErrors.lenght) {
-    console.log('ahihi');
-    props.changeAppStoreData('showError', true);
-  }
+
   return (
     <div>
       <Helmet>
@@ -439,6 +437,11 @@ export function JobPage(props) {
           </Formik>
         </PaperWrapper>
       </Container>
+      <ErrorDialog
+        open={showError}
+        error={{ title: 'Lỗi', content: errorMessage }}
+        handleClose={() => props.changeStoreData('showError', false)}
+      />
     </div>
   );
 }

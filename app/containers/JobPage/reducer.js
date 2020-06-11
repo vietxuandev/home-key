@@ -14,7 +14,8 @@ import {
 export const initialState = {
   room: {},
   roomErrors: [],
-  jobErrors: [],
+  jobError: '',
+  showError: false,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -31,7 +32,8 @@ const jobPageReducer = (state = initialState, action) =>
         draft.room = action.response;
         break;
       case POST_JOB_FAIL:
-        draft.jobErrors = action.error.errors;
+        draft.jobError = action.error.errors[0];
+        draft.showError = true;
         break;
       case CHANGE_STORE_DATA:
         draft[action.key] = action.value;

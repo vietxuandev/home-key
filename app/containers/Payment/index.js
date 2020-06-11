@@ -22,24 +22,15 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectPayment from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import {
-  Container,
-  Grid,
-  Typography,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Avatar,
-} from '@material-ui/core';
+import { Container, Grid, Typography, Button, Avatar } from '@material-ui/core';
 import PaperWrapper from '../../components/PaperWrapper/Loadable';
 import { putPay, changeStoreData } from './actions';
 import DoneIcon from '@material-ui/icons/Done';
 import CloseIcon from '@material-ui/icons/Close';
 import Money from '../../helper/format';
 import { changeAppStoreData } from '../App/actions';
+import ErrorDialog from '../../components/ErrorDialog/Loadable';
+import { getJob } from '../JobDetail/actions';
 
 const useStyles = makeStyles(theme => ({
   green: {
@@ -62,13 +53,18 @@ const useStyles = makeStyles(theme => ({
 
 const PaymentStatus = props => {
   const classes = useStyles();
-  const { status, paymentError } = props;
-  const { amount = 0, description = '', job = '' } = status;
+  const { status = {}, paymentError = '' } = props;
+  const { amount = '', description = '', job = '', type = '' } = status;
+  const handleNextPage = () => {
+    type === 'deposit'
+      ? history.push(`/job-verify/${job}`)
+      : history.push(`/job-detail/${job}`);
+  };
   const history = useHistory();
   return (
     <PaperWrapper style={{ textAlign: 'center' }}>
       {paymentError.length > 0 ? (
-        <div>
+        <div style={{ marginTop: '10px' }}>
           <Avatar className={classes.red}>
             <CloseIcon />
           </Avatar>
@@ -98,18 +94,23 @@ const PaymentStatus = props => {
           <Typography component="h1" variant="h5">
             Thanh toán thành công
           </Typography>
-          <Typography>Số tiền: {Money(amount)}</Typography>
-          <Typography>Nội dung: {description}</Typography>
+          <Typography>
+            Số tiền:{' '}
+            <span style={{ color: 'red', fontWeight: 'bold' }}>
+              {Money(amount)}
+            </span>
+          </Typography>
+          <Typography>
+            Nội dung: <span style={{ fontWeight: 'bold' }}>{description}</span>
+          </Typography>
           <Button
             className={classes.button}
-            onClick={() => {
-              history.push(`/job-verify/${job}`);
-            }}
+            onClick={handleNextPage}
             fullWidth
             variant="contained"
             color="primary"
           >
-            Tiếp tục
+            {type === 'deposit' ? 'Tiếp tục' : 'Hoàn thành'}
           </Button>
         </div>
       )}
@@ -118,18 +119,39 @@ const PaymentStatus = props => {
 };
 
 const PaymentType = props => {
+  const {
+    currentOrder = {},
+    handleOpen = () => {},
+    handlePayment = () => {},
+  } = props;
+  const { amount = '', description = '' } = currentOrder;
   return (
     <PaperWrapper>
       <Typography component="h1" variant="h5">
         Chọn hình thức thanh toán
       </Typography>
-      <Container maxWidth="sm">
+      <Container
+        maxWidth="sm"
+        style={{ marginTop: '10px', textAlign: 'center' }}
+      >
+        <Typography component="h2" variant="h6">
+          Thông tin thanh toán
+        </Typography>
+        <Typography>
+          Số tiền:{' '}
+          <span style={{ color: 'red', fontWeight: 'bold' }}>
+            {Money(amount)}
+          </span>
+        </Typography>
+        <Typography>
+          Nội dung: <span style={{ fontWeight: 'bold' }}>{description}</span>
+        </Typography>
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <Button
               fullWidth
               startIcon={<CreditCardIcon fontSize="large" color="primary" />}
-              onClick={props.handleOpen}
+              onClick={handleOpen}
             >
               <span style={{ color: 'red', fontWeight: 'bold' }}>VN</span>
               <span style={{ color: 'blue', fontWeight: 'bold' }}>PAY</span>
@@ -141,7 +163,7 @@ const PaymentType = props => {
               startIcon={
                 <AccountBalanceWalletIcon fontSize="large" color="primary" />
               }
-              onClick={props.handlePayment}
+              onClick={handlePayment}
             >
               Ví nội bộ
             </Button>
@@ -156,7 +178,8 @@ export function Payment(props) {
   useInjectReducer({ key: 'payment', reducer });
   useInjectSaga({ key: 'payment', saga });
   const { id } = useParams();
-  const { status, paymentError } = props.payment;
+  const { job = {}, status = {}, paymentError = '' } = props.payment;
+  const { currentOrder = {} } = job;
   const [open, setOpen] = useState(false);
   const handleClose = () => {
     setOpen(false);
@@ -166,20 +189,20 @@ export function Payment(props) {
   };
   const handlePayment = () => {
     props.changeAppStoreData('alert', {
-      title: 'Đặt cọc',
-      content:
-        'Tiền cọc sẽ trừ vào tài khoản của bạn? Bạn thực sự muốn đặt cọc?',
+      title: 'Thanh toán',
+      content: 'Số tiền sẽ trừ vào ví của bạn, bạn thực sự muốn thanh toán?',
       callBack: () => {
-        props.putPay(id);
+        props.putPay(currentOrder._id);
       },
     });
     props.changeAppStoreData('showAlert', true);
   };
   const handleCleanData = () => {
-    props.changeStoreData('status', null);
+    props.changeStoreData('status', {});
     props.changeStoreData('paymentError', []);
   };
   useEffect(() => {
+    props.getJob(id);
     return handleCleanData;
   }, []);
 
@@ -193,27 +216,18 @@ export function Payment(props) {
         {!_.isEmpty(status) || paymentError.length ? (
           <PaymentStatus status={status} paymentError={paymentError} />
         ) : (
-          <PaymentType handleOpen={handleOpen} handlePayment={handlePayment} />
+          <PaymentType
+            handleOpen={handleOpen}
+            handlePayment={handlePayment}
+            currentOrder={currentOrder}
+          />
         )}
       </Container>
-      <Dialog
+      <ErrorDialog
         open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">Thông báo</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Tính năng chưa được hỗ trợ
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Đồng ý
-          </Button>
-        </DialogActions>
-      </Dialog>
+        error={{ title: 'Thông báo', content: 'Tính năng chưa được hỗ trợ' }}
+        handleClose={handleClose}
+      />
     </div>
   );
 }
@@ -236,6 +250,9 @@ function mapDispatchToProps(dispatch) {
     },
     changeAppStoreData: (key, value) => {
       dispatch(changeAppStoreData(key, value));
+    },
+    getJob: id => {
+      dispatch(getJob(id));
     },
   };
 }

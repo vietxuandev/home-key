@@ -7,7 +7,7 @@ import produce from 'immer';
 import { CHANGE_STORE_DATA } from './constants';
 
 export const initialState = {
-  file: [],
+  images: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */

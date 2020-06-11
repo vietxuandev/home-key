@@ -14,7 +14,7 @@ export function* apiPostJob(payload) {
   yield put(loadRepos());
   try {
     const response = yield axios.post(requestUrl, formData);
-    yield put(push(`/payment/${response.data.data.orders[0]._id}`));
+    yield put(push(`/payment/${response.data.data._id}`));
   } catch (error) {
     yield put(postJobFail(error.response.data));
   } finally {

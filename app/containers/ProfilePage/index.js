@@ -4,9 +4,9 @@
  *
  */
 
-import React, { memo, useEffect, useLayoutEffect, useState } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import CloseIcon from '@material-ui/icons/Close';
+import DeleteIcon from '@material-ui/icons/Delete';
 import TocIcon from '@material-ui/icons/Toc';
 import Grid from '@material-ui/core/Grid';
 import RoomIcon from '@material-ui/icons/Room';
@@ -73,7 +73,7 @@ export function ProfilePage(props) {
         <meta name="description" content="Description of ProfilePage" />
       </Helmet>
       <Container maxWidth="md">
-        <PaperWrapper>
+        <PaperWrapper style={{ paddingBottom: 0 }}>
           <Typography component="h1" variant="h5">
             Thông tin cá nhân
           </Typography>
@@ -144,22 +144,13 @@ export function ProfilePage(props) {
               <PaperWrapper style={{ marginTop: 0 }}>
                 <Grid container justify="center" alignItems="center">
                   <Grid item xs={6}>
-                    <Typography>{job.fullName}</Typography>
+                    <Typography style={{ fontWeight: 'bold' }}>
+                      {job.fullName}
+                    </Typography>
                     <Typography>{job.phoneNumber}</Typography>
                   </Grid>
                   <Grid item xs={6}>
                     <Grid container>
-                      <Grid item xs={6}>
-                        <IconButton
-                          color="primary"
-                          onClick={() => {
-                            handleDelete(job._id);
-                          }}
-                        >
-                          <CloseIcon />
-                        </IconButton>
-                        <Typography>Hủy cọc</Typography>
-                      </Grid>
                       <Grid item xs={6}>
                         <IconButton
                           color="primary"
@@ -169,7 +160,16 @@ export function ProfilePage(props) {
                         >
                           <TocIcon />
                         </IconButton>
-                        <Typography>Chi tiết</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <IconButton
+                          color="primary"
+                          onClick={() => {
+                            handleDelete(job._id);
+                          }}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
                       </Grid>
                     </Grid>
                   </Grid>

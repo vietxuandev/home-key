@@ -39,6 +39,7 @@ import AlertDialog from '../../components/AlertDialog/Loadable';
 import ErrorDialog from '../../components/ErrorDialog/Loadable';
 import { Toolbar } from '@material-ui/core';
 import Bacground from '../../images/background.jpg';
+import PrivateRoute from '../../components/PrivateRoute';
 
 axios.defaults.headers.common.Authorization = `Bearer ${localStore.get(
   'token',
@@ -112,13 +113,13 @@ export function App(props) {
           <Route path="/motel/:id" component={MotelPage} />
           <Route path="/motel-room/:id" component={MotelRoom} />
           <Route path="/room/:id" component={RoomPage} />
-          <Route path="/profile" component={ProfilePage} />
-          <Route path="/recharge" component={RechargePage} />
-          <Route path="/payment/:id" component={Payment} />
-          <Route path="/payment-return" component={PaymentReturn} />
-          <Route path="/job/:id" component={JobPage} />
-          <Route path="/job-verify/:id" component={JobVerify} />
-          <Route path="/job-detail/:id" component={JobDetail} />
+          <PrivateRoute path="/profile" component={ProfilePage} />
+          <PrivateRoute path="/recharge" component={RechargePage} />
+          <PrivateRoute path="/payment/:id" component={Payment} />
+          <PrivateRoute path="/payment-return" component={PaymentReturn} />
+          <PrivateRoute path="/job/:id" component={JobPage} />
+          <PrivateRoute path="/job-verify/:id" component={JobVerify} />
+          <PrivateRoute path="/job-detail/:id" component={JobDetail} />
         </Switch>
         <Backdrop className={classes.backdrop} open={loading}>
           <CircularProgress />

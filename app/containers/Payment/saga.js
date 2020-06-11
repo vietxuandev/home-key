@@ -4,6 +4,8 @@ import { PUT_PAY } from './constants';
 import { urlLink } from '../../helper/route';
 import { putPaySuccess, putPayFail } from './actions';
 import { loadRepos, reposLoaded } from '../App/actions';
+import { GET_JOB } from '../JobDetail/constants';
+import { apiGetJob } from '../JobDetail/saga';
 
 export function* apiPutPay(payload) {
   const { id } = payload;
@@ -20,4 +22,5 @@ export function* apiPutPay(payload) {
 }
 export default function* paymentSaga() {
   yield takeLatest(PUT_PAY, apiPutPay);
+  yield takeLatest(GET_JOB, apiGetJob);
 }

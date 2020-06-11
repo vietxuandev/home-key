@@ -25,7 +25,7 @@ import { Carousel } from 'react-responsive-carousel';
 import { getMotel } from '../MotelRoom/actions';
 
 import './style.scss';
-import { Button, Typography } from '@material-ui/core';
+import { Button, Typography, Grid } from '@material-ui/core';
 import PaperWrapper from '../../components/PaperWrapper/Loadable';
 import Money from '../../helper/format';
 

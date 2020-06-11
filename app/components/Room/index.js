@@ -31,7 +31,9 @@ function Room(props) {
       type="button"
     >
       <div className="name">
-        {item.status === 'unknown' ? 'Chưa cập nhật' : `Phòng ${item.name}`}
+        {item.status === 'unknown'
+          ? 'Chưa cập nhật'
+          : `P.${item.key.split('-')[0][1]}${item.name}`}
       </div>
       <div className="price">
         {item.status === 'unknown' ? 'unknown' : `${item.acreage} m2`}
