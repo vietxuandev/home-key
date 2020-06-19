@@ -1,7 +1,7 @@
 export const urlLink = {
   // AUTHENTICATE
   api: {
-    serverUrl: 'http://150.95.114.44:5502/api',
+    serverUrl: 'https://thaibinhservice.cf/api',
     auth: {
       sign_up: '/v1/auth/signUp',
       sign_in: '/v1/auth/signIn',
