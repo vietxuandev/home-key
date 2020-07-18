@@ -17,6 +17,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
 import InfoIcon from '@material-ui/icons/Info';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PolicyIcon from '@material-ui/icons/Policy';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
@@ -54,11 +55,17 @@ function NavDrawer(props) {
           </ListItemIcon>
           <ListItemText primary="Trang chủ" />
         </ListItem>
-        <ListItem button key="info">
+        <ListItem button key="info" component={Link} to="/about">
           <ListItemIcon>
             <InfoIcon />
           </ListItemIcon>
           <ListItemText primary="Giới thiệu" />
+        </ListItem>
+        <ListItem button key="terms" component={Link} to="/terms">
+          <ListItemIcon>
+            <PolicyIcon />
+          </ListItemIcon>
+          <ListItemText primary="Điều khoản" />
         </ListItem>
       </List>
       <Divider />

@@ -19,6 +19,8 @@ import { useInjectReducer } from 'utils/injectReducer';
 import axios from 'axios';
 import AuthPage from 'containers/AuthPage/Loadable';
 import HomePage from 'containers/HomePage/Loadable';
+import Terms from 'containers/Terms/Loadable';
+import About from 'containers/About/Loadable';
 import MotelPage from 'containers/MotelPage/Loadable';
 import RoomPage from 'containers/RoomPage/Loadable';
 import MotelRoom from 'containers/MotelRoom/Loadable';
@@ -110,6 +112,8 @@ export function App(props) {
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/auth" component={AuthPage} />
+          <Route path="/terms" component={Terms} />
+          <Route path="/about" component={About} />
           <Route path="/motel/:id" component={MotelPage} />
           <Route path="/motel-room/:id" component={MotelRoom} />
           <Route path="/room/:id" component={RoomPage} />
